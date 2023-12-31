@@ -1,0 +1,126 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+\usepackage{tikz}
+\usepackage{tcolorbox}
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+
+\title{Teoria dell'informazione\\Lezione I}
+\author{Andrea Cosentino}
+\date{31 December 2023}
+
+\begin{document}
+
+    \maketitle
+
+    \section{Introduzione}
+
+    Durante il corso del '900 ci sono state diverse persone che hanno sviluppato le fondamenta della disciplina. Tra queste ricordiamo quelli che vengono considerati i padri della disciplina:
+    \begin{itemize}
+        \item Claude Shannon(USA): primo in assoluto. Fa una definizione in media
+        \item Kolmogorov(URSS): arriva dopo Shannon ma fa una definizione puntuale. Espande il suo lavoro.
+        \item Chaitin e Solomonoff: arrivano allo stesso tempo di Kolmogorov ma non vengonono considerati perché Kolmogorov era, ed è, più importante a livello accademico.
+    \end{itemize}
+    \vspace{10px}
+    Durante questo corso ci proponiamo di riuscire a spedire dei dati da una sorgente a una destinazione
+    attraverso un canale che può essere affetto da rumore.
+    \\ \\
+    Obiettivi del corso:
+    \begin{itemize}
+        \item{Sfruttare al massimo il canale}
+        \item{Gestire i bit persi nella trasmissione}
+    \end{itemize}
+    \vspace{10px}
+    \section{Una visione d'insieme}
+    (Sarebbe carino mettere un disegnino qui)\\
+    Shannon modella l'ambiente come composto da 3 attori:
+    \begin{itemize}
+        \item \textbf{Sorgente}: La sorgente genera il messaggio, lo codifica e lo spedisce sul canale.
+        \item \textbf{Canale}: Il canale è il tramite tra la sorgente e la destinazione. E' il "posto" in cui passa l'informazione. E' affetto da \textbf{rumore}.
+        \item \textbf{Ricevente}: Riceve il messaggio codificato. E' suo compito riuscirlo a decodificare.
+    \end{itemize}
+    \vspace{10px}
+    Vogliamo codificare messaggi sorgente \\ \\ (A) Massimizzando informazioni trasmesse A OGNI utilizzo del canale (problema di \textbf{Source coding}) \\ \\ (B) Minimizzando, simultaneamente al primo punto, il numero di errori di trasmissione dovuti al rumore (problema di \textbf{Channel coding}).
+    \vspace{5px}
+    Shannon cerca di risolvere questo problema usando l'approccio divide et impera. Approccio che non è detto sia quello giusto. Infatti la soluzione ottimale dei due sottoproblemi non è detto che, se messe assieme, diano la soluzione ottimale per il problema. Questo perché potremmo non sfruttare possibili vantaggi di un problema sull'altro.\\
+    Questo non è il caso e infatti vale il seguente teorema.
+    \vspace{5px}
+    \begin{tcolorbox}
+        \textbf{\textcolor{red}{TEOREMA} di codifica sorgente e canale}
+        \vspace{5px}
+        \begin{center}
+            L'unione delle soluzioni di source coding e channel coding (quindi dei due sottoproblemi risolti come indipendenti) dà la soluzione ottima.
+        \end{center}
+    \end{tcolorbox}
+
+    \vspace{10px}
+
+    \noindent Come risolvo il source coding? Enunciamo, in maniera non formale per adesso, il primo teorema di Shannon.
+    \vspace{5px}
+    \begin{tcolorbox}
+        \textbf{\textcolor{red}{TEOREMA} I teorema di Shannon}
+        \vspace{5px}
+        \begin{center}
+            Si può comprimere, tramite un codice, un messaggio con perdite di informazioni piccole
+        \end{center}
+    \end{tcolorbox}
+    \vspace{5px}
+    \noindent Questo è dovuto al fatto che l'informazione non è uniformemente distribuita. Ci sono parti della codifica inutile.\\
+    \vspace{5px}
+
+    \noindent Esempio:\\
+    Se codifico un cielo tutto azzurro, non ho bisogno di dire che ogni pixel è di colore azzurro, ma mi basta dire che una porzione di una foto è tutta azzurra.
+    \\
+    La codidfica, cioè la rimozione della ridondanza, va ad amplificare il problema del rumore. Ogni bit perso è significativo. Per risolvere il problema di channel coding useremo il secondo teorema di Shannon. Anche questo lo riportiamo, per ora, in modo informale.
+
+    \vspace{5px}
+    \begin{tcolorbox}
+        \textbf{\textcolor{red}{TEOREMA} II teorema di Shannon}
+        \vspace{5px}
+        \begin{center}
+            Posso trasmettere con possibilità di errore piccola a piacere. Uitlizzo una ridondanza, controllata in base alla distorsione del canale.
+        \end{center}
+    \end{tcolorbox}
+
+    \section{Modellazione}
+    Cominciamo a dare una definizione formale dei vari strumenti che utilizzeremo durante il corso.\\
+    Innanzitutto vederemo il canale come una matrice stocastica, cioè una matrice tale che la somma dei contributi di una riga è pari 1.\\
+    Per esempio, data questa matrice che rappresenta un canale
+
+    \begin{center}
+        \begin{tabular}{ c c c c c c }
+            IN/OUT &  a & b & c & d & e  \\
+            a & 0.7 & 0 & 0.1 & 0.1 & 0.1  \\
+            b & 0 & 0.5 & 0.5 & 0 & 0 \\
+            c & 0.1 & 0.1 & 0.1 & 0.1 & 0.6 \\
+            d & 0.2 & 0.1 & 0.3 & 0.1 & 0.3   \\
+            e & 0.4 & 0.2 & 0.2 & 0.1 & 0.1 \\
+        \end{tabular}
+    \end{center}
+
+    Sulla prima riga sono presenti tutti i simboli che la destinazione può ricevere (a,b,c,d ed e), mentre sulla prima colonna tutti i simboli che può generare la sorgente. Il numero che si trova nella posizione (i,j) indica la probabilità che  la sorgente generi, e invii, il simbolo i-esimo e che il ricevente ricevi il simbolo j-esimo. \\
+    Nel nostro caso,  la probabilità che inviando \textit{a} si riceva \textit{c} è di 0.1, cioè 10\% \\
+    Si noti come la matrice identità modelli un canale "perfetto" ovvero senza distorsione (rumore).
+    \vspace{10px}
+
+    \noindent Nella matrice appaiono i simboli "a,b,c,d,e". Questi sono i simboli prodotti dalla sorgente. I simboli prodotti dalla sorgente appartengono a $\mathbb{X}$.
+    \\
+    I messaggi sono definiti come segue:
+    \vspace{5px}
+
+    \noindent Sia $\mathbb{X}$ l'insieme finito di simboli che compongono i messaggi generati dalla sorgente. \\ \\
+    Un messaggio $x \, = \,(x_1,...,x_n)\, \epsilon \, \mathbb{X}^n$ di lunghezza n è una sequenza di n simboli sorgente.
+    \\ \\
+    I simboli sorgente sono poi tradotti (quindi codificati) in parole di codice prima di essere inviati sul canale. \\
+    Una \textbf{parola di codice} è una sequenza di numeri dall'insieme {0,...,d-1} dei simboli di codice, dove d > 1 è la base del codice.\\
+    Per effettuare la traduzione viene usata una \textbf{funzione di codifica}, che mappa i simboli sorgente in parole di codice
+
+    $$c : \mathbb{X} \rightarrow \{0,...,d-1\}^+$$
+
+    Dove $\{0,...,d-1\}^+$ è formalmente
+
+    $$\bigcup_{n=1}^{+\infty}\{0,...,d-1\}^n$$
+
+
+\end{document}
