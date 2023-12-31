@@ -1,0 +1,73 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+\usepackage{tikz}
+\usepackage{tcolorbox}
+
+
+\title{Teoria dell'informazione\\Lezione I}
+\author{Andrea Cosentino}
+\date{31 December 2023}
+
+\begin{document}
+
+    \maketitle
+
+    \section{Introduzione}
+
+    Durante il corso del '900 ci sono state diverse persone che hanno sviluppato le fondamenta della disciplina. Tra queste ricordiamo quelli che vengono considerati i padri della disciplina:
+    \begin{itemize}
+        \item Claude Shannon(USA): primo in assoluto. Fa una definizione in media
+        \item Kolmogorov(URSS): arriva dopo Shannon ma fa una definizione puntuale. Espande il suo lavoro.
+        \item Chaitin e Solomonoff: arrivano allo stesso tempo di Kolmogorov ma non vengonono considerati perché Kolmogorov era, ed è, più importante a livello accademico.
+    \end{itemize}
+    \vspace{10px}
+    Durante questo corso ci proponiamo di riuscire a spedire dei dati da una sorgente a una destinazione
+    attraverso un canale che può essere affetto da rumore.
+    \\ \\
+    Obiettivi del corso:
+    \begin{itemize}
+        \item{Sfruttare al massimo il canale}
+        \item{Gestire i bit persi nella trasmissione}
+    \end{itemize}
+    \vspace{10px}
+    \section{Modellazione}
+    (Sarebbe carino mettere un disegnino qui)\\
+    Shannon modella l'ambiente come composto da 3 attori:
+    \begin{itemize}
+        \item \textbf{Sorgente}: La sorgente genera il messaggio, lo codifica e lo spedisce sul canale.
+        \item \textbf{Canale}: Il canale è il tramite tra la sorgente e la destinazione. E' il "posto" in cui passa l'informazione. E' affetto da \textbf{rumore}.
+        \item \textbf{Ricevente}: Riceve il messaggio codificato. E' suo compito riuscirlo a decodificare.
+    \end{itemize}
+    \vspace{10px}
+    Vogliamo codificare messaggi sorgente \\ \\ (A) Massimizzando informazioni trasmesse A OGNI utilizzo del canale (problema di \textbf{Source coding}) \\ \\ (B) Minimizzando, simultaneamente al primo punto, il numero di errori di trasmissione dovuti al rumore (problema di \textbf{Channel coding}).
+    \vspace{5px}
+    Shannon cerca di risolvere questo problema usando l'approccio divide et impera. Approccio che non è detto sia quello giusto. Infatti la soluzione ottimale dei due sottoproblemi non è detto che, se messe assieme, diano la soluzione ottimale per il problema. Questo perché potremmo non sfruttare possibili vantaggi di un problema sull'altro.\\
+    Questo non è il caso e infatti vale il seguente teorema.
+    \vspace{5px}
+    \begin{tcolorbox}
+        \textbf{\textcolor{red}{TEOREMA} di codifica sorgente e canale}
+        \vspace{5px}
+        \begin{center}
+            L'unione delle soluzioni di source coding e channel coding (quindi dei due sottoproblemi risolti come indipendenti) dà la soluzione ottima.
+        \end{center}
+    \end{tcolorbox}
+
+    \vspace{10px}
+
+    \noindent Come risolvo il source coding? Enunciamo, in maniera non formale per adesso, il primo teorema di Shannon.
+    \vspace{5px}
+    \begin{tcolorbox}
+        \textbf{\textcolor{red}{TEOREMA} I teorema di Shannon}
+        \vspace{5px}
+        \begin{center}
+            Si può comprimere, tramite un codice, un messaggio con perdite di informazioni piccole
+        \end{center}
+    \end{tcolorbox}
+    \vspace{5px}
+    \noindent Questo è dovuto al fatto che l'informazione non è uniformemente distribuita. Ci sono parti della codifica inutile.\\
+    \vspace{5px}
+
+    \noindent Esempio:\\
+    Se codifico un cielo tutto azzurro, non ho bisogno di dire che ogni pixel è di colore azzurro, ma mi basta dire che una porzione di una foto è tutta azzurra.
+
+\end{document}
