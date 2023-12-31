@@ -1,0 +1,3 @@
+Test funzionamento LaTeX
+
+$\pi$
