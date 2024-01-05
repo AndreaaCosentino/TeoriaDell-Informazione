@@ -122,5 +122,39 @@
 
     $$\bigcup_{n=1}^{+\infty}\{0,...,d-1\}^n$$
 
+    \noindent L'obiettivo che ci poniamo è di \textbf{minimizzare} $l_c(x)$, ovvero la lunghezza della parola di codice per il simbolo $x\,\epsilon \, \mathbb{X}$. \\
+
+    \noindent Risulta naturale cercare di assegnare a dei simboli che sono usati più spesso una parola di codice con lunghezza minore. Viceversa, a simboli usati raramente associamo lunghezze maggiori. Questo perché il nostro obiettivo è di minimizzare la lunghezza media pesata per la probabilità di utilizzo del simbolo, in poche parole il valore atteso. \\
+
+    \noindent Shannon definisce come $p(x)$ la probabilità di generazione di un simbolo. Inoltre assume, per semplicità, l'indipendenza di un simbolo dall'altro. Ovvero, la generezione di un simbolo $x \, \epsilon \, \mathbb{X}$ non influenza la generazione successiva di un simbolo $y \, \epsilon \, \mathbb{X}$
+    \\
+
+    \noindent Definiamo la variabile casuale  $X\,:\, \mathbb{X} \, \rightarrow \mathbb{R}$. Questa rappresenta l'estrazione di 1 simbolo dalla sorgente. \\
+    p diventa quindi la distribuzione di probabilità dei simboli della sorgente, mentre definiamo $P_n$ come  $P_n(x_1,...,x_n) = p(x_1)...p(x_n)$. Questo vale perché l'estrazioni sono indipendenti. \\
+    $P_n$ è la distribuzione sui messaggi $\mathbb{X}^n$. \\
+
+    \noindent Per avere una notazione più compatta, definiamo $\mathbb{D}$ come l'insieme $\{0,..,d-1\}$ dei simboli di codice con base d. Quindi c può essere definita come  $$c\,:\, \mathbb{X} \, \rightarrow \, \mathbb{D}^+$$
+
+    \section{Problema codifica sorgente}
+
+    Visti gli strumenti precedenti, possiamo definire in modo formale il problema della codifica sorgente che a inizio lezione avevamo descritto in modo non rigoroso.
+
+    \vspace{5px}
+    \begin{tcolorbox}
+        \textbf{\textcolor{red}{PROBLEMA}}
+        \vspace{5px}
+        \begin{center}
+            Dato un modello di sorgente $<\mathbb{X},p>$ e una base d $>$ 1, trovare un codice $c\,:\,\mathbb{X} \, \rightarrow \, \mathbb{D}^+$ tale che il valore atteso $$\mathbb{E}[l_c] = \sum_{x\epsilon\mathbb{X}} l_c(x) p(x)$$ della lunghezza di parola di codice sia minimo.
+        \end{center}
+    \end{tcolorbox}
+    \vspace{5px}
+
+    \noindent Il problema, così formulato, si presta a una soluzione banale e inutile! Infatti, basta dire che $c(x)\,=\,0$ per gni $x\,\epsilon\,\mathbb{X}$. Bisogna introdurre delle limitazioni.
+
+    \section{Limitazioni}
+
+    La prima limitazione che introduciamo è che \textbf{il codice deve essere non singolare}. Un codice $c\,:\,\mathbb{X}\,\rightarrow \, \mathbb{D}^+$ è non signolare se a simboli della sorgente corrispondono parole di codice distinte (funzione iniettiva).  \\
+    \\
+    Formalmente, $$\forall x,x^{'} \, \epsilon \mathbb{X}\,: x\neq x^{'} vale \, c(x) \neq c(x^{'})$$
 
 \end{document}
