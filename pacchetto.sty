@@ -1,0 +1,71 @@
+\usepackage{graphicx} % Required for inserting images
+\usepackage{tikz}
+\usepackage[italian]{babel}
+\usepackage{tcolorbox}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{pifont}
+\usepackage{amsthm}
+\usepackage{xcolor}
+\usepackage{worldflags}
+\usepackage{enumitem}
+\usepackage{tkz-euclide}
+\usepackage{tcolorbox}
+\usepackage{pgfplots} % plot functions
+\setlist[itemize,1]{label= \ding{112}}
+\usetikzlibrary{fit}
+\usetikzlibrary{arrows,decorations.pathmorphing}
+\usepackage{adjustbox} % trimbox
+\usepackage{multirow} % per usare tabular (incolonnare roba)
+\usetikzlibrary{positioning,matrix, arrows.meta} % incolonnare roba in modo carino :3
+
+\usepackage[markcase=noupper]{scrlayer-scrpage}
+
+% PER INDICE CLICCABILE %
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks,
+    citecolor=black,
+    filecolor=black,
+    linkcolor=black,
+    urlcolor=black
+}
+
+\theoremstyle{definition}
+\newtheorem{exmp}{Esempio}
+\newtheorem{dimo}{Dimostrazione}
+\newtheorem{defi}{Definzione}
+\newtheorem{es}{Esercizio}
+
+
+\xdefinecolor{color}{RGB}{255,110,0}
+\xdefinecolor{greenie}{RGB}{59,243,115}
+
+\clearpairofpagestyles
+\automark[chapter]{chapter}
+\renewcommand\chaptermarkformat{\chaptername\ \thechapter:\enskip}
+
+\lehead*{%
+    \makebox[0pt][r]{
+        \colorbox{color}{\makebox[\textwidth][r]{\pagemark\enskip}}\hspace*{1em}}%
+    \headmark\hspace*{1em}\headrulefill%
+}
+\rohead*{%
+    \headrulefill\hspace*{1em}\headmark%
+    \makebox[0pt][l]{%
+        \hspace*{1em}\colorbox{color}{\makebox[\textwidth][l]{\enskip\pagemark}}}%
+}
+
+\addtokomafont{pagenumber}{\bfseries\color{white}}
+\newcommand\headrulefill{\leaders\hrule width 0pt height 3pt depth -2.8pt \hfill}
+
+\newcommand{\sorgente}{$\mathbb{X}$}
+\newcommand{\probabilita}{$p$}
+\newcommand{\modello}{$<$\sorgente$,$ \probabilita $>\,$}
+\newcommand{\somma}[1]{\sum_{i=1}^{#1}}
+\def\lc{\left\lceil}
+\def\rc{\right\rceil}
+
+\newcommand{\va}{\mathbb{E}}
+\newcommand{\values}{\sum_{x \in \mathbb{X}}}
