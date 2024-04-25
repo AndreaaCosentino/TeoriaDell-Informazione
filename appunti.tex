@@ -714,7 +714,7 @@
         $$\values p(x) \log_D{(\frac{p_x}{D^{-l_c(x)}} \frac{ \sum_{x' \in \mathbb{X}} D^{-l_c(x')}}{\sum_{x'' \in \mathbb{X}} D^{-l_c(x'')}})}$$
 
         $$=  \values p(x) (\log_D{(p_x \frac{\sum_{x' \in \mathbb{X} } D^{-l_c(x')}}{D^{-l_c(x)}})}) - \log_D(\values D^{-l_c(x)})$$
-        Sappiamo che $\frac{\sum_{x' \in \mathbb{X} } D^{-l_c(x')}} = \frac{1}{q(x)}$
+        Sappiamo che $\frac{\sum_{x' \in \mathbb{X} } D^{-l_c(x')}} {D^{-l_c(x)}}= \frac{1}{q(x)}$
 
         $$= \values p(x) (\log_D{\frac{p(x)}{q(x)}}) - \values p(x) \log_D{\sum_{x' \in \mathbb{X}} D^{-l_c(x')}}$$
         Considerazioni finali:
@@ -1566,6 +1566,1117 @@
         $$C =  1 - H(p)$$
     \end{itemize}
 
+    \chapter{Lezione XI}
 
+    \section{Canale binario a cancellazione}
+    Introduciamo un altro canale, il canale binario a cancellazione (in inglese BEC, binary erased channel).
+
+    \vspace{10px}
+    \begin{center}
+
+        \begin{tikzpicture}
+            \node[] (A) at (-2,0){$0$};
+            \node[] (B) at (-2,-4){$1$};
+            \node[] (E) at (2,-2){e};
+            \node[] (A1) at (2,0){$0$};
+            \node[] (B1) at (2,-4){$1$};
+            \draw[->] (A) -- (A1)  node[midway, above]{$1-\alpha$};
+            \draw[->] (B) -- (B1) node[midway, above]{$1-\alpha$};
+            \draw[->] (A) -- (E)  node[midway,sloped, above left]{$\alpha$};
+            \draw[->] (B) -- (E) node[sloped, midway, above right]{$\alpha$};
+        \end{tikzpicture}
+
+    \end{center}
+    Dove "e" indica l'errore. Con probabilità $1-\alpha$ ricevimanto il simbolo giusto invece con probabilità $\alpha$ si verifica un errore. Calcoliamo la capacità di questo canale. Cominciamo con l'osservare che
+
+    $$H(Y|X = 0) = H(Y|X = 1) = H(\alpha)$$
+    e quindi
+    $$H(\alpha) = H(Y|X)$$
+
+    \begin{center}
+        \begin{tikzpicture}
+            \node[] (A) at(-4,0){$0$};
+            \node[] (A1) at(-3,1) {$0$};
+            \node[] (A2) at(-3,-1) {$e$};
+            \draw[-] (A) -- (A1);
+            \draw[-] (A) -- (A2);
+            \node[] (B) at(-2,0){$1$};
+            \node[] (B1) at(-1,1) {$1$};
+            \node[] (B2) at(-1,-1) {$e$};
+            \draw[-] (B) -- (B1);
+            \draw[-] (B) -- (B2);
+            \draw[->,very thick] (0,0) -- (1,0);
+            \node[] (C) at (1.5,0) {$H(\alpha)$};
+        \end{tikzpicture}
+    \end{center}
+    Ciò implica che
+
+    $$I(X,Y) = H(Y) - H(\alpha)$$
+    Dobbiamo quindi calcolarci il massimo $H(Y)$. Cominciamo con introdurre la variabile casuale bernoulliana $Z$:
+
+    $$ Z = \begin{cases}
+               1 \hspace{40px} \;\text{se}\; \mathbb{Y} = e\\
+               0 \hfill \text{altrimenti}
+    \end{cases}$$
+    Quindi abbiamo $1$ se c'è errore, $0$ altrimenti. Notiamo che
+
+    $$H(Y,Z) = H(Y) + H(Z|Y) $$
+    siccome $H(Z|Y) = 0$
+    $$H(Y,Z) = H(Y)$$
+    Vale anche che
+    $$H(Y,Z) = H(Z) + H(Y,Z)$$
+    Dunque
+    $$H(Y) = H(Z) + H(Y|Z)$$
+    Osserviamo che
+
+    $$p(z = 1) = p(z=1 | X = 0) p(X = 0) + p(z=1 | X = 1) p(X = 1)$$
+    $$= \alpha p(X = 0) + \alpha p(X = 1) = \alpha$$
+    Ne consegue che $p(z = 0) = 1 -\alpha$ e quindi $H(\alpha) = H(Z)$. Ci resta solamente da calcolare $H(Y|Z)$. Innanzitutto sappiamo che $p(Y = 1 | Z = 0) = p(X = 1)$ e quindi $H(Y | Z = 0) = H(X)$. Possiamo allora scrivere
+
+    $$H(Y|Z) = H(Y|Z = 0) p(z = 0) + H(Y|Z = 1) p(z = 1)$$
+    e sapendo che $H(Y|Z = 1) = 0$ e che $p(z = 0) = 1 - \alpha$
+    $$= H(X) (1 - \alpha)$$
+
+    \noindent
+    Concludendo
+
+    $$C = \max_{p(x)} H(Y) - H(\alpha) $$
+    $$= \max_{p(x)} (H(\alpha) + H(X) (1 - \alpha)) - H(\alpha)$$
+    $$= (1-\alpha) \max_{p(x)} H(X)$$
+    $$= 1 - \alpha$$
+
+    \section{Codice di Fano}
+    Presentiamo l'algoritmo per la costruzione di un codice di Fano
+
+    \begin{enumerate}
+        \item Prendiamo le probabilità e le ordiniamo in maniera decrescente.
+        \item Dividiamo la lista delle probabilità in due gruppi tali che $$\sum_{1^\circ gruppo} prob.\; \tilde =  \sum_{2^\circ gruppo} prob.$$
+        ovvero due gruppi che hanno più o meno la stessa probabilità.
+        \item Assegniamo $0$ agli eventi del $1^\circ$ gruppo e $1$ a quelli del $2^\circ$ gruppo.
+        \item Applichiamo ricorsivamente i punti \circled{1},\circled{2} e \circled{3} finché abbiamo ancora simboli da assegnare.
+    \end{enumerate}
+
+    \begin{exmp}
+        Dati i simboli $\{A,B,C,D,E\}$ e le probabilità a loro associate (rispettivamente) $\{0.35,0.25,0.15,0.15,0.1\}$.
+        Applichiamo l'algoritmo passo per passo:
+        \begin{enumerate}
+            \item Dividiamo in due gruppi con probabilità più o meno uguali. Scegliamo  (ci possono essere più possibilità) di costruire $\{A,B\}$ e $\{C,D,E\}$.
+            \item Assegniamo $0$ ad $\{A,B\}$ e $1$ a $\{C,D,E\}$.
+            \item Prendiamo il gruppo $\{A,B\}$ e ripetiamo la procedura.
+            \begin{enumerate}
+                \item Dividiamo nell'unico modo possibile, quindi $\{A\}$ e $\{B\}$.
+                \item Assegniamo $0$ ad $A$ e $1$ a $B$.
+            \end{enumerate}
+            \item Prendiamo il gruppo $\{C,D,E\}$ e ripetiamo la procedura.
+            \begin{enumerate}
+                \item Dividiamo in due gruppi, $\{C\}$ e $\{D,E\}$.
+                \item Assegniamo $0$ a $C$ e $1$ a $D,E$.
+                \item Prendiamo il gruppo $\{D,E\}$ e ripetiamo la procedura.
+                \begin{enumerate}
+                    \item Dividiamo nell'unico modo possibile, quindi $\{D\}$ e $\{E\}$.
+                    \item Assegniamo $0$ ad $D$ e $1$ a $E$.
+                \end{enumerate}
+            \end{enumerate}
+        \end{enumerate}
+        Abbiamo quindi ottenuto il seguente codice
+        \begin{itemize}
+            \item $A \rightarrow 00$
+            \item $B \rightarrow 01$
+            \item $C \rightarrow 10$
+            \item $D \rightarrow 110$
+            \item $E \rightarrow 111$
+        \end{itemize}
+    \end{exmp}
+
+    \noindent
+    Notiamo dall'esempio che i codici di Shannon-Fano non sono ottimali. Il problema è che partiamo dalla radice e già assegniamo i prefissi, quindi al contrario di quello che fa Huffman.
+
+
+    \chapter{Lezione XII}
+
+
+    \section{Introduzione}
+    Il problema che c'eravamo posti all'inizio era suddiviso in due parti
+
+    \vspace{10px}
+
+    \begin{tikzpicture}[
+        roundnode/.style={circle, draw=green!60, fill=green!5, very thick, minimum size=7mm},
+        squarednode/.style={rectangle, draw=red!60, fill=red!5, very thick, minimum width=30mm, minimum height= 10mm},
+        curly/.style={decorate,decoration={snake,post length=0.7mm}},
+        mainsquarednode/.style = {rectangle, draw=red!60, fill=red!5, very thick, minimum width=80mm, minimum height= 20mm}
+    ]
+%Nodes
+        \node[mainsquarednode](A){};
+        \node[squarednode](B) at(-2,0) {COMPRESSIONE};
+        \node[squarednode](C)[right=of B]{RIDONDANZA};
+        \draw[->] (-5,0) -- (A) node[near start, above]{MSG};
+
+        \draw[->] (-2,-3) -- (-2,-1.4) node[near start, sloped,above]{FATTA!};
+        \draw[->] (2,-3) -- (2,-1.4) node[near start, sloped,above]{DA FARE!};
+
+        \node[] at (-2,1.25) {$C_1$};
+        \node[] at (2,1.25) {$C_2$};
+    \end{tikzpicture}
+
+    \noindent
+    La parte che ci resta da fare $C_2$ è divisa in 2 sottoparti:
+
+    \begin{enumerate}
+        \item rilevazione errore
+        \item correzione errore
+    \end{enumerate}
+    Ci sono due tipi di errori con cui dobbiamo confrontarci
+    \begin{itemize}
+        \item Errori singoli
+        $$1010x01010x$$
+        \item Errori burst
+        $$1xxx01xxxx01$$
+    \end{itemize}
+
+    \begin{defi}
+        Si dice \textbf{rumore bianco} il rumore che ha effetto su tutti i bit allo stesso modo.
+    \end{defi}
+
+    \section{Esercizi di probabilità}
+
+    Siano:
+
+    \begin{itemize}
+        \item $n \rightarrow$ numero di bit
+        \item $p \rightarrow$ probabilità di errore
+        \item $(1-p)^n \rightarrow$ probabilità di avere $n$ bit giusti
+    \end{itemize}
+    Risolvere i seguenti esercizi:
+
+    \begin{es}
+        Qual è la probabilità di avere esattamente $1$ errore?
+        $$np (1-p)^{n-1}$$
+    \end{es}
+
+    \begin{es}
+        Qual è la probabilità di avere esattamente $l$ errori?
+        $$\binom{n}{l}p^l (1-p)^{n-l}$$
+    \end{es}
+
+    \begin{es}
+        Qual è la probabilità di avere al \textbf{massimo} $l$ errori?
+        $$\somma{l} \binom{n}{i}p^i (1-p)^{n-i}$$
+    \end{es}
+
+    \begin{es}
+        Qual è la probabilità di avere un numero pari di errori?
+
+        $$\sum_{i = 0}^{\lc \frac{n}{2} \rc} \binom{n}{2i}p^{2i} (1-p)^{n-2i}$$
+        Ovvero usiamo una sommatoria da $0$ a $\frac{n}{2}$ e consideriamo i numeri pari moltiplicando per $2$ l'indice all'interno dell'espressione. Così, se $n$ fosse 10, la sommatoria andrebbe a $0$ a $5$ e noi considereremmo solo i casi in cui gli errori sono $0,2,4,6,8,10$, proprio come volevamo.
+    \end{es}
+    Questo ultimo esercizio è utile in certe situazioni.
+
+    \section{Codici di correzione}
+    Consideriamo alcuni codici noti che permettono di rilevare errori in fase di trasmissione e in alcuni casi di corregerli.
+
+    \subsection{Single parity check code}
+    Permette di identificare \textbf{un solo} errore all'interno della stringa.
+    \begin{exmp}
+        Data la stringa $0101010$ calcoliamo il bit di parità in questo modo
+
+        $$\sum_{i = 1}^7 x_i \mod{2}$$
+        In questo caso vale $1$ e quindi mandiamo la stringa $01010101$. Se un bit viene sbagliato il ricevente se ne accorge.
+    \end{exmp}
+    Per avere dei codici che permettano di rilevare, o addirittura correggere, degli errori bisogna aggiungere dei bit. Il numero di bit aggiunti è chiamata \textbf{ridondanza}. Formalmente è definita come
+
+    $$\frac{\text{BIT SPEDITI}}{\text{BIT DI INFORMAZIONE}}$$
+    Dove con "bit di informazione" intendiamo quei bit che avrei dovuto realmente spedire. Nel caso del single parity check code la ridondanza è
+    $$\frac{n}{n-1} = 1 + \frac{1}{n-1}$$
+    e $\frac{1}{n-1}$ viene detta \textbf{ridondanza aggiunta}. Dobbiamo cercare un compromesso tra esattezza (affidabilità) e  lunghezza del messaggio (efficienza).
+
+    \subsection{Codice ASCII}
+    Il codice ASCII fu pensato inizialmente per $7$ bit. In questa versione viene aggiunto un ottavo bit a quelli di informazione, chiamato bit di parità. Il codice ASCII è usato per errori di tipo burst con il side effect che errori multipli possono auto-cancellarsi.
+    Dato un messaggio si costrisce in questo modo il codice ASCII:
+
+    \begin{enumerate}
+        \item Prendiamo il messaggio
+        \item Lo convertiamo in binario
+        \item Aggiungiamo bit di parità per ogni parola
+        \item Per ogni colonna calcoliamo la checksum e aggiungiamo la parola ottenuta al messaggio.
+    \end{enumerate}
+
+    \begin{exmp}
+        Dato la stringa $Hello\ss NCTU$ dove $\ss$ rappresenta lo spazio.
+
+        \begin{center}
+            \begin{tabular}{ccc}
+                PAROLA & BIT DI PARITA' & PAROLA IN BINARIO \\
+                $110_8 = \text{H} =$ & 0 & $1001000_2$ \\
+                $145_8 = \text{E} =$ & 0 & $1100101_2$ \\
+                $154_8 = \text{L} =$ & 0 & $1101100_2$ \\
+                $154_8 = \text{L} =$ & 0 & $1101100_2$ \\
+                $157_8 = \text{O} =$ & 0 & $1101111_2$ \\
+                $040_8 = \ss =$ & 1 & $0100000_2$ \\
+                $116_8 = \text{N} =$ & 0 & $1001110_2$\\
+                $103_8 = \text{C} =$ & 1 & $1000011_2$\\
+                $124_8 = \text{T} =$ & 1 & $1010100_2$\\
+                $125_8 = \text{U} =$ & 0 & $1010101_2$\\
+                & & \\
+                CHECKSUM & $\rightarrow$& $1101110_2$
+            \end{tabular}
+        \end{center}
+    \end{exmp}
+
+    \subsection{Codici pesati}
+    Come gli altri codici,  i codici pesati aggiungono una checksum al messaggio. Questa viene calcolata in un modo particolare, che prende in considerazione la posizione dei simboli all'interno del messaggio, per questo sono detti "pesati". Per trovare la checksum procediamo nel seguente modo
+
+    \begin{center}
+        \begin{tabular}{cll}
+            MSG & $\sum$ & $\sum \sum$\\
+            $\omega$ & $\omega$ & $\omega$ \\
+            $x$ & $\omega + x$& $2\omega + x$ \\
+            $y$ & $\omega + x + y$& $2\omega + 2x + y$ \\
+            $z$ & $\omega + x + y + z$& $2\omega + 2x + 2y +z$ \\
+            checksum $?$ & $\omega + x + y + z$ & $ 2\omega + 2x + 2y +z + (\omega + x + y + z)$ \\
+        \end{tabular}
+
+    \end{center}
+
+    \noindent
+    Dove per la checksum non abbiamo aggiunto nulla, dato che non ne sappiamo il valore. Una volta ottenuto  $ 2\omega + 2x + 2y +z + (\omega + x + y + z)$ possiamo ricavarla. Detta $n$ la grandezza dell'alfabeto (cioè il numero di simboli) e $r$ il resto della divisione tra $ 2\omega + 2x + 2y +z + (\omega + x + y + z)$ e $n$, la checksum è quel numero tale che
+
+    $$r + \text{checksum} \equiv_2 0$$
+
+    \begin{exmp}
+        Data la stringa $3B\ss 8$ trovare la checksum. Prima di tutto notiamo che il numbero di simboli è $37$ ($\{0,\dots,9,A,\dots,z,\ss\}$ ha cardinalità 37). Calcoliamo il valore che interessa come spiegato prima
+
+        \begin{center}
+            \begin{tabular}{cccc}
+                & MSG &$\sum$ & $\sum \sum$\\
+                $3$ & $3$ &$3$ & $3$ \\
+                $B$ & $11$ &$14$& $17$ \\
+                $\ss$ &  $36$ & $50$ & $67$ \\
+                $8$ & $8$&$58$& $125$ \\
+                checksum &  ??&$58$ & $183$
+            \end{tabular}
+
+        \end{center}
+
+        \noindent
+        Dividamo $183$ per $37$ per trovare il resto.
+
+        $$\frac{183}{37} = 4 \; \text{resto} \; 35$$
+        Qual è quel numero che sommato a $35$ è uguale a $0$ in modulo $37$? E' $2$! Infatti
+
+        $$35 + 2 = 37 \equiv_{37} 0$$
+        Come controlliamo che abbiamo fatto giusto?
+
+        \vspace{10px}
+        \begin{center}
+            \begin{tabular}{cccc}
+                Parola & & Posizione & Risultato \\
+                $3$ & $\times$ & $5$ & $15$ \\
+                $11$ & $\times$ & $4$ & $44$ \\
+                $36$ & $\times$ & $3$ & $108$ \\
+                $8$ & $\times$ & $2$ & $16$ \\
+                $2$ & $\times$ & $1$ & $2$ \\
+                & &  &  \\
+                TOTALE & &  & 185  \\
+            \end{tabular}
+        \end{center}
+
+        \noindent
+        Per essere corretto deve valere che
+        $$185 \equiv_{37} 0$$
+        Siccome vale allora abbiamo fatto i calcoli correttamente.
+
+    \end{exmp}
+
+    \begin{es}
+        Controllare che se riceviamo $3B82$ il messaggio è sbagliato.
+        \vspace{10px}
+        \begin{center}
+            \begin{tabular}{cccc}
+                Parola & & Posizione & Risultato \\
+                $3$ & $\times$ & $4$ & $12$ \\
+                $11$ & $\times$ & $4$ & $33$ \\
+                $8$ & $\times$ & $3$ & $16$ \\
+                $2$ & $\times$ & $2$ & $2$ \\
+                & &  &  \\
+                TOTALE & &  & 63  \\
+            \end{tabular}
+        \end{center}
+
+        \noindent
+        $63\mod_{37} = 26$ quindi è sbagliato, dato che dovrebbe essere $0$.
+    \end{es}
+
+    \begin{es}
+        Controllare se il messaggio $3B\ss28$ è sbagliato o meno.
+        \vspace{10px}
+        \begin{center}
+            \begin{tabular}{cccc}
+                Parola & & Posizione & Risultato \\
+                $3$ & $\times$ & $5$ & $15$ \\
+                $36$ & $\times$ & $4$ & $44$ \\
+                $5$ & $\times$ & $3$ & $111$ \\
+                $2$ & $\times$ & $2$ & $4$ \\
+                $8$ & $\times$ & $1$ & $8$ \\
+                & &  &  \\
+                TOTALE & &  & 182  \\
+            \end{tabular}
+        \end{center}
+        $182$ modulo $37$ fa $34$ quindi è sbagliato.
+    \end{es}
+
+    \subsection{Codici (M,N)}
+    Nelle lezioni precedenti abbiamo definito il canale con la tripla
+    $$<\mathbb{X},\mathbb{Y},p(y|x)>$$
+    Diamo adesso la definizione di canale su cui vengono spediti $n$ messaggi
+    $$<\mathbb{X}^n,\mathbb{Y}^n,p(y^n|x^n)>$$
+    Siccome siamo su canali senza memoria sappiamo che
+    $$p(y^n|x^n) = \prod_{i=1}^n p(y_i|x_i)$$. Un codice $(M,N)$ è tale che
+
+    \begin{itemize}
+        \item $M$ è la lunghezza del messaggio spedito sul canale (i simboli sono numerati da $1$ a $M$).
+        \item $N$ è il numero di volte che viene utilizzato il canale. Notare che a ogni utilizzo del canale possiamo scriver o il bit $0$ o il bit $1$. Quindi utilizzandolo $N$ volte scriviamo $N$ bit, cioè un messaggio al massimo di dimensione $2^N$.
+    \end{itemize}
+
+    \noindent
+    Introduciamo due funzioni:
+    \begin{itemize}
+        \item Funzione di codifica $$x^q : \{1,\dots,M\} \rightarrow \mathbb{X}^q$$
+        \item Funzione di decodifica $$g: \mathbb{Y}^q \rightarrow \{1,\dots,M\}$$
+    \end{itemize}
+    Definiamo la probabilità di errore sull'i-esimo simbolo come
+
+    $$x_i = p(g(y^q) \neq i | \mathbb{X}^q = x^q(i))$$
+    La probabilità massima di errore è
+    $$x^{(n)} = \max_i x_i$$
+    Invece la probabilità media di errore è
+    $$p_e^{(n)} = \frac{1}{m}\sum_{i = 1}^m x_i$$
+    Vale la seguente disequazione
+    $$p_e^{(n)} \leq x^{(n)}$$
+    Il \textbf{tasso di trasmissione} di un codice di tipo $(m,n)$ è dato da
+    $$R = \frac{\log_2{M}}{n}$$
+    dove la base del logaritmo è $2$ perché siamo in binario. La lunghezza massima del messaggio che possiamo spedire è $M = 2^N$, questo è possibile solamente senza rumore. Il tasso di trasmissione in questo caso è $R = 1$.
+
+    \section{II Teorema di Shannon}
+    Siamo finalmente pronti a enunciare il secondo teorema di Shannon.
+
+    \vspace{5px}
+    \begin{tcolorbox}
+        \textbf{\textcolor{red}{Teorema} II Teorema di Shannon}
+        \vspace{5px}
+        \begin{center}
+
+            Sia $<\mathbb{X},\mathbb{Y},p(y|x)>$ un canale con capacità $c$. $\forall R < c \exists k_1,k_2,\dots $ sequenze di codici dove $k_n$ è di tipo ($2^{nR_n},n$)
+            tale che
+
+            $$\lim_{n \rightarrow + \infty} R_n = R$$
+            e
+            $$\lim_{n \rightarrow + \infty} x^{(n)}(k_n)  = 0$$
+        \end{center}
+    \end{tcolorbox}
+
+    \noindent
+    Notiamo che $R_n$ indica il rumore, se è $= 1$ allora non c'è rumore, più si avvicina a $0$ più ce n'è. Quello che ci dice questo teorema è che, $a)$  più il messaggio è grande più il rumore, qualsiasi esso sia (ma sempre minore di $c$) diventa "trascurabile", e $b)$ che la probabilità massima di errore tende a $0$ con il crescere della lunghezza del messaggio.
+
+    \chapter{Lezione XIII}
+
+
+    \section{Codici di rilevazione errori}
+
+    In questa lezione vediamo alcuni esempi di codici reali.
+
+    \subsection{ISBN-10}
+
+    Il codice $ISBN-10$ è un codice univoco di identificazione dei libri a $10$ numeri (esiste anche l'$ISBN-13$).  L'alfabeto usato è
+
+    $$\Sigma = \{0,1,2,3,4,5,6,7,8,9,x\}$$
+    Dove $x$ indica il $10$. $ISBN-10$ è un codice pesato.
+
+    \begin{exmp}
+        Il codice
+        $$ 0-471-24195-4$$
+        è un codice $ISBN-10$, ed è tale che:
+
+        \begin{itemize}
+            \item $0$ è la nazione, nello specifico $0$ indica i paesi anglofoni.
+            \item $471$ è l'id-publisher.
+            \item $24195$ è il book-number.
+            \item $4$ è l'error detection.
+        \end{itemize}
+    \end{exmp}
+
+    \begin{es}
+        Dato il codice $$0-52-18-4868-7$$
+        controllare se è corretto. Prima di tutto notiamo che è scritto in modo leggermente diverso da prima. In realtà sono identici e $18-4868$ identica il publisher id in questo caso.
+        Per controllare se è corretto procediamo come segue:
+
+        \begin{center}
+            \begin{tabular}{lccl}
+                &$\sum$& $\sum \sum$ \\
+                5 & 5 & 5 \\
+                2 & 7 & 12 \\
+                1 & 8 & 20 \\
+                8 & 16 & 36 \\
+                4 & 20 & 56 \\
+                8 & 28 & 84 \\
+                6 & 34 & 118 \\
+                8 & 42 & 160 \\
+                7 & 49 & 209
+            \end{tabular}
+        \end{center}
+
+        \noindent
+        Per essere corretto $209 \equiv_11 0$, e lo è, infatti $\frac{209}{11} = 19$ resto $0$.
+    \end{es}
+
+    \noindent
+    Si lascia al lettore il seguente esercizio:
+
+    \begin{es}
+        Verificare che il codice $0-471-24195-4$ sia corretto.
+        (Risposta: E' corretto, $176 \equiv_{11} 0$ )
+    \end{es}
+
+    \subsection{UPC}
+    Il codice UPC (Universal Product Code) è il comune codice a barre. Non è un codice pesato ma di parita ed è a $12$ cifre.
+
+    \begin{exmp}
+        Un codice UPC è fatto nel seguente modo
+
+        \begin{center}
+            \begin{tikzpicture}
+
+                \node[] (A) at (-3,0) {$036000$};
+                \node[right of=A] (B) at (-1,0) {$29145$};
+                \node[right of=B] (C) at (1.5,0) {$2$};
+
+                \draw[decorate,decoration={brace,mirror,raise=0.5ex}] (A.south west) -- (A.south east)
+                node[midway,below=1ex] (D) {ID} ;
+                \node[below of=D] at (-2.9,-0.2) {PRODUTTORE};
+                \draw[decorate,decoration={brace,mirror,raise=0.5ex}] (B.south west) -- (B.south east)
+                node[midway,below=1ex] (E) {ID} ;
+                \node[below of=E] at (0.1,-0.2) {PRODOTTO};
+                \draw[decorate,decoration={brace,mirror,raise=0.5ex}] (C.south west) -- (C.south east)
+                node[midway,below=1ex] (E) {CHECKSUM} ;
+
+            \end{tikzpicture}
+        \end{center}
+    \end{exmp}
+
+    \noindent
+    Come capiamo se un codice è corretto? Sommiamo le cifre dispari e le moltiplichiamo per $3$ e poi sommiamo le cifre pari (iniziamo a contare da $1$). Il risultato deve essere $0$ in modulo $12$. Proviamo con il codice nell'esempio:
+
+    $$3(6 + 2 + 1 +5) + (3+9+4+2) =$$
+    $$= 3(14) + 18 =  42 + 18 = 60 \equiv_{12} 0$$
+
+    \section{Codici di rilevazione e correzione}
+
+    Fino a ora abbiamo visto solamente codici che possono rilevare gli errori ma non correggerli. Ci concentriamo adesso sui codici che possono anche correggerli.  Supponiamo di avere una stringa da spedire
+
+    $$(x_1,x_2,x_3)$$
+    Aggiungiamo dei bit di controllo $(x_4,x_5,x_6)$ che sono definiti come
+
+    $$\begin{cases} x_4 = x_1 + x_2 \\
+    x_5 = x_1 + x_3 \\
+    x_6 = x_2 + x_3\end{cases}$$
+    Quindi quello che spediremo sarà
+
+
+    \begin{center}
+        \begin{tikzpicture}
+            \node[] (A) at (-3,0) {$(x_1,x_2,x_3,$};
+            \node[right of=A] (B) at (-2.4,0) {$x_4,x_5,x_6)$};
+
+            \draw[decorate,decoration={brace,mirror,raise=0.5ex}] (A.south west) -- (A.south east)
+            node[midway,below=1ex] (D) {BIT} ;
+            \node[below of=D] at (-2.9,-0.2) {DI INFORMAZIONE};
+            \draw[decorate,decoration={brace,,raise=0.5ex}] (B.north west) -- (B.north east)
+            node[midway,above=1ex] (E) {CONTROLLO} ;
+            \node[above of=E] at (-1.5,0.2) {BIT DI};
+
+        \end{tikzpicture}
+    \end{center}
+
+    \noindent
+    Dal lato ricevente  dovrà valere che
+    $$\begin{cases} y_4 = y_1 + y_2 \\
+    y_5 = y_1 + y_3 \\
+    y_6 = y_2 + y_3\end{cases}$$
+
+    \begin{center}
+        \begin{tabular}{ccc}
+            SE SBAGLIO & VENGONO ERRATI \\
+            $x_1$& $y_4,y_5$  \\
+            $x_2$& $y_4,y_6$  \\
+            $x_3$& $y_5,y_6$  \\
+            $x_4$& $y_4$  \\
+            $x_5$& $y_5$  \\
+            $x_6$& $y_6$  \\
+        \end{tabular}
+    \end{center}
+    Questo codice riesce quindi a correggere $1$ errore, ma non di più. Riesce a rilevare il doppio errore ma non riesce a correggerlo.
+
+    \begin{center}
+        \begin{tabular}{ccc}
+            SE SBAGLIO & VENGONO ERRATI \\
+            $x_1,x_2$& $y_5,y_6$  \\
+            $x_1,x_3$& $y_4,y_6$  \\
+            $x_1,x_4$& $y_5$  \\
+            $x_1,x_5$& $y_4$  \\
+            $x_1,x_6$& $y_4,y_5,y_6$
+        \end{tabular}
+    \end{center}
+
+    \noindent
+    Proviamo ad ampliare il nostro codice:
+
+    $$\begin{cases} x_4 = x_1 + x_2 + x_3 \\
+    x_5 = x_1 + x_2 + x_3 \\
+    x_6 = x_1 + x_2 + x_3\end{cases}$$
+    Il nostro codice peggiore, facciamo retromarcia.
+
+    \subsection{Codice a ripetizione tripla}
+
+    $$\begin{cases} x_2 = x_3 = 0 \hspace{40px} \text{se} \; x_1 = 0 \\
+    x_2 = x_3 = 1 \hfill \text{se} \; x_1 = 1 \end{cases}$$
+    Facciamo una copia del bit iniziale, il ricevitore manterrà il bit che compare più volte.
+
+    \begin{center}
+        \begin{tabular}{cc}
+            RICEVO & SCELGO \\
+            $001$& $0$  \\
+            $010$& $0$  \\
+            $011$& $1$  \\
+            $100$& $0$  \\
+            $101$& $1$  \\
+            $110$& $1$
+        \end{tabular}
+    \end{center}
+
+    \begin{es}
+        Sia $p_e = p$ la probabilità di errore, qual è la probabilità di scegliere $0$?
+
+        $$p(\text{di scegliere 0}) = \frac{1}{2}$$
+        ed è uguale alla probabilità di scegliere $1$.
+    \end{es}
+
+    \begin{es}
+        Qual è la probabilità di inviare $000$ e di ricevere $001$?
+
+        $$p(w \; 000,r \; 001) = p(w\; 000) p(r \; 001 | w\; 000) = \frac{1}{2} p (1-p)^2$$
+    \end{es}
+
+    \begin{es}
+        Qual è la probabilità di inviare $111$ e di ricevere $001$?
+
+        $$p(w \; 111,r \; 001) = p(w\; 111) p(r \; 001 | w\; 111) = \frac{1}{2} p^2 (1-p)$$
+    \end{es}
+
+    \begin{es}
+        Qual è la probabilità di ricevere $001$?
+
+        $$p(r \; 001) = p(w\; 000, r\; 001) + p(w\; 111, r\; 001) = \frac{1}{2} p^2 (1-p) + \frac{1}{2} p (1-p)^2$$
+        $$= \frac{1}{2} p (1-p) (p + (1-p)) = \frac{1}{2} p (1-p)$$
+    \end{es}
+
+    \noindent
+    Un altro codice a rilevazione doppia e correzione singola è
+
+    $$\begin{cases} x_1 + x_2 = 0\\
+    x_1 + x_3 = 0 \end{cases}$$
+    Possiamo scriverla in forma matriciale
+
+    \[
+        M = \begin{bmatrix}
+                1 & 1 & 0 \\
+                1 & 0 & 1
+        \end{bmatrix}
+        \; x^T = \begin{bmatrix}
+                     0 \\
+                     0
+        \end{bmatrix} \]
+
+    \subsection{Codici di tipo (n,k)}
+
+    Sia $C$  un codice di tipo $(n,k)$, ovvero che mappa $k$ bit ( chiamiamola $s$) in una stringa binaria di $n$ bit.
+    $C$ è un codice linare se esiste una matrice $G_{k\times n}$ e $H_{(n-k) \times n}$ tale che
+
+    $$x = (x_1,\dots,x_n) = (s_1,\dots,s_k) \cdot G$$
+    e vale anche che $H x^T = 0^T$, dove $x$ è la parola del codice e $s$ il messaggio binario associato.
+
+    \begin{defi}
+        $$R = \frac{n}{k}$$
+        viene detto \textbf{rate}, ovvero quanti bit inviati per ogni bit di informazione.
+    \end{defi}
+
+    \subsubsection{Codice di Hamming}
+    Il codice di Hamming è un codice di tipo $(7,4)$, quindi con rate $R = \frac{7}{4} = 1.75$. Ha le stesse caratteristiche del codice a rilevazione tripla, ma utilizza meno bit.
+
+
+    \begin{center}
+        \begin{tikzpicture}
+            \node[] (A) at (-3.15,0) {$(p_1,p_2,p_3,$};
+            \node[right of=A] (B) at (-2.4,0) {$s_1,s_2,s_3,s_4)$};
+
+            \draw[decorate,decoration={brace,mirror,raise=0.5ex}] (A.south west) -- (A.south east)
+            node[midway,below=1ex] (D) {BIT DI} ;
+            \node[below of=D] at (-2.9,-0.2) {CONTROLLO};
+            \draw[decorate,decoration={brace,,raise=0.5ex}] (B.north west) -- (B.north east)
+            node[midway,above=1ex] (E) {INFORMAZIONE} ;
+            \node[above of=E] at (-1.5,0.2) {BIT DI};
+
+        \end{tikzpicture}
+    \end{center}
+    Dove $p_1,p_2,p_3$ sono calcolati come
+
+    $$\begin{cases}
+          p_1 = s_1 + s_3 + s_4 \\
+          p_2 = s_1 + s_2 + s_3 \\
+          p_3 = s_2 + s_3 + s_4
+    \end{cases}$$
+
+    \noindent
+    In forma matriciale
+
+    \[\mathbf{H} =
+    \bordermatrix{ & p_1 & p_2 & p_3 & s_1 & s_2 & s_3 & s_4 \cr
+    & 1 & 0 & 0 & 1 & 0 & 1 & 1\cr
+    & 0 & 1 & 0 & 1 & 1 & 1 & 0\cr
+    & 0 & 0 & 1 & 0 & 1 & 1 & 1} \qquad
+    \]
+
+    \noindent
+    Esprimiamo la matrice generatrice  come:
+
+    \[\mathbf{G} =
+    \bordermatrix{ & p_1 & p_2 & p_3 & & & &\cr
+    s_1 & 1 & 1 & 0 & 1 & 0 & 0 & 0 \cr
+    s_2 & 0 & 1 & 1 & 0 & 1 & 0 & 0 \cr
+    s_3 & 1 & 1 & 1 & 0 & 0 & 1 & 0\cr
+    s_4 & 1 & 0 & 1 & 0 & 0 & 0 & 1} \qquad
+    \]
+
+
+    \begin{exmp}
+        Spediamo il messaggio $0111100$ e riceviamo $p_1 = 0, p_2 = 1, p_3 = 1$ (quindi abbiamo ricevuto $011100011$), rilevare se c'è stato un errore e correggerlo.
+
+        \noindent
+        Prendiamo la matrice $H$ e la moltiplichiamo per il vettore messaggio
+
+
+        \[
+            \begin{bmatrix}
+                1 & 0 & 0 & 1 & 0 & 1 & 1\\
+                0 & 1 & 0 & 1 & 1 & 1 & 0\\
+                0 & 0 & 1 & 0 & 1 & 1 & 1
+            \end{bmatrix}
+            \times
+            \; \begin{bmatrix}
+                   0 \\
+                   1 \\
+                   1 \\
+                   1 \\
+                   1 \\
+                   0 \\
+                   0
+            \end{bmatrix} \; = \; \begin{bmatrix}
+                                      1 \\
+                                      1 \\
+                                      0
+            \end{bmatrix} \]
+        Per essere corretto il vettore risultante (chiamato \textbf{sindrome}) dovrebbe essere composto da soli $0$. Se nella posizione $i$ c'è un $1$ allora vuol dire che $p_i$ è errato. In questo caso sono sbagliati $p_1$ e $p_2$. Come facciamo a sapere qual è il bit errato? Usiamo il diagramma di \textbf{McEliece}.
+
+        \begin{center}
+
+            \begin{tikzpicture}
+
+                \draw (90:1.3cm)  circle (3cm);
+                \node[] at (-0.5,0.5) {$P_1$};
+                \node[] at (3,4) {$P_2$};
+                \node[] at (4,-0.5) {$P_3$};
+                \node[] at (1.25,2.5) {$s_1$};
+                \node[] at (4,2) {$s_2$};
+                \node[] at (2.35,1.5) {$s_3$};
+                \node[] at (1.8,0) {$s_4$};
+                \draw (50:4.6cm)  circle (3cm);
+                \draw (0:4cm)  circle (3cm);
+            \end{tikzpicture}
+        \end{center}
+
+        \noindent
+        Nel nostro caso abbiamo il bit errato era $s_1$.
+        Il messaggio ricevuto è della somma del messaggio inviato con l'errore (ignorando i bit $p_1,p_2,p_3$)
+
+        $$y = x + e = (0110100) + (0001000)$$
+        Inoltre vale
+
+        $$H y = H x^T + H e^T$$
+        dove $H x^T$ vale $0$ nel caso il messaggio sia corretto.
+    \end{exmp}
+
+    \begin{es}
+        Verificare se il messaggio ricevuto $y = (1110100)$ sia errato.
+
+        \[
+            \begin{bmatrix}
+                1 & 0 & 0 & 1 & 0 & 1 & 1\\
+                0 & 1 & 0 & 1 & 1 & 1 & 0\\
+                0 & 0 & 1 & 0 & 1 & 1 & 1
+            \end{bmatrix}
+            \times
+            \; \begin{bmatrix}
+                   1 \\
+                   1 \\
+                   1 \\
+                   0 \\
+                   1 \\
+                   0 \\
+                   0
+            \end{bmatrix} \; = \; \begin{bmatrix}
+                                      1 \\
+                                      0 \\
+                                      0
+            \end{bmatrix} \]
+        Usando McEliece ci accorgiamo che $p_1$ è il bit errato. Lo si può correggere trasformandolo in $0$.
+    \end{es}
+
+    \chapter{Capitolo XIV}
+
+
+    \section{Campi di Galois}
+
+    In questa sezione discutiamo i campi di Galois, che ci serviranno nel contesto dei codici ciclici. Solitamente noi lavoriamo su un $1$ byte, cioè $8$ bit. Avendo $8$ bit possiamo esprimere al massimo $256$ numeri diversi (da $0$ a $255$). Abbiamo però un problema. I $256$ possibili valori formano un anello, e su un anello non è garantito che un elemento abbia l'inverso. La domanda che sorge spontanea è, che cosa ce ne frega dell'inverso? Per rispondere a questa domanda vediamo prima di tutto cos'è l'inverso. L'inverso di un numero $a$ è quel valore tale che
+
+    $$a \cdot \frac{1}{a} \equiv_{256} 1$$
+    Nel contesto dei codici cicli ci servirà l'operazione di divisione. Il problema è che se un numero non ha inverso, non può dividere un altro numero.
+
+    \begin{exmp}
+        Consideriamo l'anello $\mathbb{Z}_8$ e l'elemento $2$. $2$ non ha inverso in $\mathbb{Z}_8$ , infatti
+
+        $$4 \cdot 1 \equiv_8 4$$
+        $$4 \cdot 2 \equiv_8 0$$
+        $$4 \cdot 3 \equiv_8 4$$
+        $$4 \cdot 4 \equiv_8 0$$
+        $$4 \cdot 5 \equiv_8 4$$
+        $$4 \cdot 6 \equiv_8 0$$
+        $$4 \cdot 7 \equiv_8 4$$
+        Allora se prendiamo l'elemento $1$ del campo e lo proviamo a dividere per $4$, la divisione non si può fare. Infatti non esiste $x$ tale che $4 \cdot x = 1$.
+    \end{exmp}
+    La mancanza dell'inverso non preclude la divisione, infatti se gli elementi hanno un fattore comune la divisione potrebbe essere possibile anche senza inverso.
+
+    \begin{exmp}
+        Consideriamo l'anello $\mathbb{Z}_6$ e l'elemento $2$. $2$ non ha inverso in $\mathbb{Z}_6$ , infatti
+
+        $$2 \cdot 1 \equiv_6 2$$
+        $$2 \cdot 2 \equiv_6 4$$
+        $$2 \cdot 3 \equiv_6 0$$
+        $$2 \cdot 4 \equiv_6 2$$
+        $$2 \cdot 5 \equiv_6 4$$
+        Allora se prendiamo  l'elemento $4$ del campo e lo proviamo a dividere per $4$, la divisione si può fare. Infatti  esiste $x$ tale che $2 \cdot x = 4$, ed è proprio $2$. Questo è possibile perché hanno un fattore comune. Invece, per esempio, $5$ non è divisibile, infatti non esiste alcun $x$ che soddisfi $2 \cdot x = 5$.
+    \end{exmp}
+
+    \noindent
+    Perché serve l'inverso per poter dividere un numero? Si consideri l'operazione di divisione sotto-forma di moltiplicazione
+
+    $$b \div a  = b \cdot a^{-1}$$
+    se l'inverso non esiste, non possiamo svolgere l'operazione. Se però esiste un fattore comune allora $b = d \cdot b'$ e $a = d \cdot a'$, ne consegue che
+
+    $$\frac{b}{a} = \frac{d \cdot b'}{d \cdot a'} = \frac{b'}{a'}$$
+    E' ovvio che se $b'$ e $a'$ non possano essere semplificati ulteriormente e se $a'$ non ha inverso allora l'operazione non è possibile.
+
+    \noindent
+    Lavorare su un anello è problematico. Se però $256$ fosse primo, allora ci troveremmo in presenza di un campo, il quale garantisce l'inverso per tutti i suoi elementi.
+
+    \begin{es}
+        Determinare se $Z_{10}$ è un campo o meno. Soluzione: $Z_{10}$ non è un campo, infatti $2$ non ha inverso in $Z_{10}$.
+    \end{es}
+
+    \begin{es}
+        Determinare se $Z_{15}$ è un campo o meno. Soluzione: In $Z_{15}$ $2$  ha inverso, infatti $2^{-1} = 8$. Problema: l'elemento $3$ (che in $Z_{10}$ aveva inverso) non ha inverso in $Z_{15}$. Quindi $Z_{15}$ non è un campo.
+    \end{es}
+    Quindi, in generale, $Z_{(n)}$ con $n$ non primo, ovvero composto, è un anello. Invece, $Z_p$ con $p$ primo è un campo.
+
+    \begin{es}
+        Determinare se $Z_7$ è un campo o meno. Soluzione $Z_7$ è un campo, infatti:
+        $$2 \cdot 4 \equiv_7 1$$
+        $$3 \cdot 5 \equiv_7 1$$
+        $$4 \cdot 2 \equiv_7 1$$
+        $$5 \cdot 3 \equiv_7 1$$
+        $$6 \cdot 6 \equiv_7 1$$
+    \end{es}
+
+    \noindent
+    Generalmente in un anello $Z_n$ un elemento $a$ ha inverso se e solo se $a$ è co-primo con $n$, ovvero $MCD(a,n) = 1$.
+
+
+    \subsection{Generatore}
+    Su un campo si dice \textbf{generatore} (o anche \textbf{radice primitiva}) un numero che elevato a tutti gli elementi, diversi da $0$, del campo mi genera gli elementi stessi.
+
+    \begin{exmp}
+        Proviamo a vedere se $4$ è generatore di $\mathbb{Z}_7$
+
+        $$4^0  \equiv_7 1 $$
+        $$4^1  \equiv_7 4 $$
+        $$4^2  \equiv_7 2 $$
+        $$4^3  \equiv_7 1 $$
+        $$4^4  \equiv_7 4 $$
+        $$4^5  \equiv_7 2 $$
+        $$4^6  \equiv_7 1 $$
+        $4$ non è un generatore per $\mathbb{Z}_7$
+    \end{exmp}
+
+    \noindent
+    Notiamo che appena troviamo un $1$ i valori si ripetono. Se il numero è un generatore trovo $1$ solamente all'inizio e alla fine. Se trovo un $1$ in mezzo so già che non è un generatore. Infatti, vale il seguente teorema:
+
+    \vspace{5px}
+    \begin{tcolorbox}
+        \textbf{\textcolor{red}{Teorema} Piccolo teorema di Fermat }
+        \vspace{5px}
+        \begin{center}
+
+            Vale la seguente uguaglianza
+            $$\alpha^{p-1} \equiv_p 1$$
+
+        \end{center}
+    \end{tcolorbox}
+
+    \noindent
+    Per essere più veloce con i conti, non c'è bisogno di calcolare, per esempio $4^5$, ma basta prendere il risultato di $4^4$ e moltiplicarlo per $4$. Nell'esempio sopra,  $4^4$ è uguale a $4$, $4 \cdot 4 \equiv_7 2$. Molto più veloce di fare $4^5 = 1024 \equiv_7 2$.
+
+    \begin{es}
+        Verificare se $3$ è un generatore per $\mathbb{Z}_7$
+
+
+        $$3^0  \equiv_7 1 $$
+        $$3^1  \equiv_7 3 $$
+        $$3^2  \equiv_7 2 $$
+        $$3^3  \equiv_7 6 $$
+        $$3^4  \equiv_7 4 $$
+        $$3^5  \equiv_7 5 $$
+        $$3^6  \equiv_7 1 $$
+        $3$ è un generatore per $\mathbb{Z}_7$.
+    \end{es}
+
+    \begin{es}
+        Verificare se $2$ è un generatore per $\mathbb{Z}_7$
+
+
+        $$2^0  \equiv_7 1 $$
+        $$2^1  \equiv_7 2 $$
+        $$2^2  \equiv_7 4 $$
+        $$2^3  \equiv_7 1 $$
+        $2$ non è un generatore per $\mathbb{Z}_7$.
+    \end{es}
+
+    \begin{es}
+        Verificare se $5$ è un generatore per $\mathbb{Z}_7$
+
+        $$5^0  \equiv_7 1 $$
+        $$5^1  \equiv_7 3 $$
+        $$5^2  \equiv_7 2 $$
+        $$5^3  \equiv_7 6 $$
+        $$5^4  \equiv_7 4 $$
+        $$5^5  \equiv_7 5 $$
+        $$5^6  \equiv_7 1 $$
+        $5$ è un generatore per $\mathbb{Z}_7$.
+    \end{es}
+
+    \noindent
+    Come abbiamo visto, possono esistere più generatori all'interno di un campo. Possiamo mappare i due generatori tra di loro. In questo caso il campo è detto \textbf{isomorfo}.
+
+    \subsection{Definizione campi di Galois}
+    I campi di Galois ci permettono di avere un campo anche se il numero non è primo.
+    Un campo di Galois è formalmente
+
+    $$GF(p^n)$$
+    dove $p$ è un numero primo e $n$ un numero naturale. Alcuni campi particolari sono $GF(11^1)$ e $GF(7^1)$. Nel nostro caso
+
+    $$\mathbb{Z}_{256} = GF(2^8)$$
+
+    \begin{center}
+
+        \begin{tikzpicture}
+            \node[] (A) at (-2.5,0) {$GF(2)$};
+            \node[] (B) at(2.5,0) {$GF(2^8)$};
+            \draw[->] (A) -- (B) node[midway, above] {ESTENSIONE};
+        \end{tikzpicture}
+    \end{center}
+    Gli elementi di un campo di Galois sono dei polinomi di grado $n-1$ e con coefficienti in $\mathbb{Z}^p$. Nel nostro caso hanno grado al massimo $7$ e coefficienti in $\{0,1\}$.
+
+    \begin{exmp}
+        Il seguente polinomio rappresenta un byte
+        $$x^7 + x^6 + x^5 + x^4 + x^3 + x^2 + x^1 + x^0$$
+        che rappresenta il byte di valore
+        \begin{center}
+            \begin{tikzpicture}
+
+                \matrix (A) [matrix of nodes, nodes={draw, minimum size=12mm,color = orange},
+                    column sep=-\pgflinewidth]{
+                    1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 \\};
+
+            \end{tikzpicture}
+        \end{center}
+    \end{exmp}
+
+    \begin{exmp}
+        Il seguente polinomio
+        $$x^6 + x^5 + x^3 + x^1$$
+        il byte di valore
+        \begin{center}
+            \begin{tikzpicture}
+
+                \matrix (A) [matrix of nodes, nodes={draw, minimum size=12mm,color = orange},
+                    column sep=-\pgflinewidth]{
+                    0 & 1 & 1 & 0 & 1 & 0 & 1 & 0 \\};
+
+            \end{tikzpicture}
+        \end{center}
+    \end{exmp}
+
+    \noindent
+    Facciamo un po' di calcoli per prenderci la mano.
+
+    \begin{exmp}
+        Prendiamo due polinomi $a(x),b(x) \in GF(2^8)$:
+
+        $$a(x) = x^6 + x + 1$$
+        $$b(x) = x^4 + x^2 + x$$
+        Innanzitutto notiamo che la loro somma darà sempre un elemento del campo.
+
+        $$a(x) + b(x) = x^6 + x^4 + x^2 + 1$$
+        Invece la moltiplicazione non è detto
+        $$a(x) \cdot b(x)  = x^10 + x^5  + x^4 + x^8 + x^3 + x^2 + x^7 + x^2 + x$$
+        $$= x^10 + x^8 + x^7 + x^5 + x^4 + x^3 + x$$
+        Notiamo che $x^{10}$ e $x^8$ sono fuori dal campo, dobbiamo riuscire a ridurli, cioè dobbiamo prenderne il modulo.
+
+        \begin{center}
+            \begin{tikzpicture}
+                \node[] at (-1.30,0) {$c(x)$};
+                \node[] at (-0.20,0) {$m(x)$};
+                \node[] at (-1.30,-0.75) {$r(x)$};
+                \node[] at (-0.30,-0.75) {$q(x)$};
+                \draw[] (-0.75,0.5) -- (-0.75, -1.5);
+                \draw[] (-0.75,-0.3) -- (0.3,-0.3);
+            \end{tikzpicture}
+        \end{center}
+
+        \noindent
+        Quindi $a(x) b(x) \equiv_{m(x)} r(x)$. Vogliamo che il valore ottenuto sia all'interno di un campo e non di un anello.  Dobbiamo scegliere $m(x)$ irriducibile. Usiamo per esempio $m(x) = x^8 + x^4 + x^3 + x + 1$ (usato con AES). Non è l'unico polinomio che possiamo utilizzare, ce ne sono diversi (per $GF(2^8)$ ce ne sono circa 30). Se utilizzando due polinomi diversi troviamo due resti diversi, $r(x)$ e $r'(x)$ allora ci troviamo in un campo isomorfo, e potremmo mapparli tra di loro.
+        Concludiamo l'esercizio di prima:
+
+        \begin{center}
+            \begin{tikzpicture}
+                \node[] at (-3.80,0) {$x^{10} + x^8 + x^7 + x^5 + x^4 + x^3 + x$};
+                \node[] at (1.20,0) {$x^8 + x^4 + x^3 + x + 1$};
+                \node[] at (-4.60,-0.75) {$x^{10} + x^6 + x^5 + x^3 + x^2$};
+
+                \node[] at (-0.10,-0.75) {$x^2 +1$};
+                \draw[] (-0.75,0.5) -- (-0.75, -4.5);
+                \draw[] (-0.75,-0.3) -- (3.5,-0.3);
+                \draw[] (-0.75,-1) -- (-6.75,-1);
+                \node[] at (-4.30,-1.30) {$x^8 + x^7 + x^6 + x^4 + x^2 + x$};
+                \node[] at (-4.85,-1.80) {$x^8 + x^4 + x^3 + x + 1$};
+                \draw[] (-0.75,-2.10) -- (-6.75,-2.10);
+                \node[] at (-4.15,-2.40) {r(x) = $x^7 + x^6 + x^3 + x^2 + 1$};
+            \end{tikzpicture}
+        \end{center}
+
+        \noindent
+        Quindi
+        $$a(x) \cdot b(x) \equiv_{m(x)} x^7 + x^6 + x^3 + x^2 + 1$$
+        \begin{center}
+            \begin{tikzpicture}
+
+                \matrix (A) [matrix of nodes, nodes={draw, minimum size=12mm,color = orange},
+                    column sep=-\pgflinewidth]{
+                    1 & 1 & 0 & 0 & 1 & 1 & 0 & 1 \\};
+
+            \end{tikzpicture}
+        \end{center}
+    \end{exmp}
+
+    \section{Codici ciclici}
+
+    \begin{center}
+
+        \begin{tikzpicture}
+
+            \draw (90:1cm)  circle (4cm);
+            \node[] at (0,4) {\textbf{LINEARI}};
+            \node[] at (0,2.78) {\textbf{CICLICI}};
+            \node[] at (0,1) {\textbf{BCH}};
+            \draw (90:1cm)  circle (2.5cm);
+            \draw (90:1cm)  circle (1.5cm);
+        \end{tikzpicture}
+    \end{center}
+
+    \noindent
+    I codici ciclici sono dei codici $(n,k)$ in cui il polinomi che rappresenta il messaggio è del tipo
+
+    $$m(x) = m_0 x^0 + m_1 x^1 + \dots + m_{k-1} x^{k-1}$$
+    e il polinomio generatore è
+    $$g(x) = g_0 x^0 + \dots + g_{k-1} x^{k-1}$$
+    I codici ciclici possono essere
+
+    \begin{itemize}
+        \item Sistematici: Posizioni prestabilite per bit di controllo e di informazione. Parola di codice ($v(x)$ rappresentata come
+        $$v(x) = m(x) \cdot g(x)$$
+        dove $m(x)$ è il messaggio da spedire.
+        \item Non sistematici: Posizione bit di controllo non prefissata. Parola di codice rappresentata come
+
+        $$v(x) = x^{n-k} m(x) + r(x)$$
+    \end{itemize}
+    Vediamo un esempio
+
+    \begin{exmp}
+        Dato il codice $(7,4)$ con $g(x) = 1 + x + x^3$ e $m(x) = 1 + x^2 + x^3$ trovare la parola di codice corrispondente.
+        \begin{itemize}
+            \item CASO SISTEMATICO: $$v(x) = m(x) g(x)$$
+            $$= (1 + x^2 + x^3) (1+x+x^3)$$
+            $$= x^6 + x^5 + x^4 + x^3 + x^2 + x + 1$$
+            \item CASO NON SISTEMATICO:
+            $$v(x) = x^{n-k} m(x) + r(x)$$
+            Cominciamo con il calcolare $x^{n-k} m(x)$
+            $$x^3(x^3 + x^2 + 1) = x^6 + x^5 + x^3$$
+            Dividiamo per $g(x) = 1 + x + x^3$. Facendo i conti (lasciati da fare al lettore) troviamo che
+            $$v(x) = x^3 + x^5 + x^6 + 1$$
+        \end{itemize}
+    \end{exmp}
+
+    \subsection{Matrice generatrice}
+    Per trovare le parole di codice possiamo anche usare la matrice generatrice. Ecco come,
+
+    \begin{enumerate}
+        \item Scriviamo la matrice generatrice
+        \[
+            G = \begin{bmatrix}
+                    x^{k-1} & \cdot & g(x) \\
+                    x^{k-2} & \cdot & g(x) \\
+                    \vdots & \vdots & \vdots \\
+                    x^{k-k} & \cdot & g(x) \\
+            \end{bmatrix}
+        \]
+        \item Se vogliamo ottenere le parole del codice nella forma sistematica, applichiamo combinazione lineare di righe per ottenere
+        \[
+            G = \begin{bmatrix}
+                    & I  & | & &\\
+            \end{bmatrix}
+        \]
+        (dove $I$ è la matrice identità).
+        \item Trovo le parole di codice
+
+        $$[c] = [d] \cdot [G]$$
+        dove $c$ è la parola di codice e $d$ è il messaggio (come $s$ nei codici a ripetizione tripla).
+    \end{enumerate}
+
+    \noindent
+    Definiamo il polinomio di parità come
+
+    $$h(x) = \frac{x^n + 1}{g(x)}$$
+    Per essere un polinomio generatore valido, $g(x)$ deve dividere propriamente $x^n + 1$.
+
+    \begin{es}
+        Dato il codice $(7,3)$ con $g(x) = x^4 + x^2 + x + 1$, trovare tutte le possibili parole di codice.
+    \end{es}
 
 \end{document}
