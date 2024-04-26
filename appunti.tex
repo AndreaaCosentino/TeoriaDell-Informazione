@@ -21,10 +21,10 @@
 
     \begin{flushright}
         \begin{tabular}{r}
-            \textit{Nel cielo non c'è nulla,}
+            \textit{Nel cielo non c'è niente,}
             \\
             \textit{
-                perché le cose importanti stanno per terra.}
+                le cose importanti stanno per terra.}
             \\
             \begin{footnotesize}
                 - Uno studente di teoria dell'informazione.
@@ -40,11 +40,11 @@
     \label{cap:Lezione I}
     \section{Introduzione}
 
-    Durante il corso del '900 diverse figure hanno contribuito allo sviluppo delle fondamenta della disciplina. Tra queste ricordiamo coloro che vengono considerati i padri della disciplina:
+    Durante il corso del '900 diverse figure hanno contribuito allo sviluppo delle fondamenta della disciplina. Tra queste ricordiamo coloro che ne vengono considerati i padri:
     \begin{itemize}
-        \item Claude Shannon(USA): primo in assoluto. Fa una definizione in media
-        \item Kolmogorov(URSS): arriva dopo Shannon ma fa una definizione puntuale. Espande il lavoro di Shannon.
-        \item Chaitin e Solomonoff: arrivano allo stesso tempo di Kolmogorov ma non vengonono considerati perché Kolmogorov era, ed è, più importante a livello accademico.
+        \item Claude Shannon(USA): primo in assoluto. Dà una definizione in media
+        \item Kolmogorov(URSS): arriva dopo Shannon ma dà una definizione puntuale. Espande il lavoro di Shannon.
+        \item Chaitin e Solomonoff: arrivano allo stesso tempo di Kolmogorov ma non vengonono considerati perché Kolmogorov era più importante a livello accademico.
     \end{itemize}
     \vspace{10px}
     Durante questo corso ci proponiamo di riuscire a spedire dei dati da una sorgente a una destinazione
@@ -156,30 +156,29 @@
     \vspace{5px}
 
     \noindent Sia $\mathbb{X}$ l'insieme finito di simboli che compongono i messaggi generati dalla sorgente. \\ \\
-    Un messaggio $x \, = \,(x_1,...,x_n)\, \epsilon \, \mathbb{X}^n$ di lunghezza n è una sequenza di n simboli sorgente.
+    Un messaggio $x \, = \,(x_1,...,x_n)\, \epsilon \, \mathbb{X}^n$ di lunghezza $n$ è una sequenza di $n$ simboli sorgente.
     \\ \\
     I simboli sorgente sono poi tradotti (quindi codificati) in parole di codice prima di essere inviati sul canale. \\
-    Una \textbf{parola di codice} è una sequenza di numeri dall'insieme {0,...,d-1} dei simboli di codice, dove d > 1 è la base del codice.\\
+    Una \textbf{parola di codice} è una sequenza di numeri dall'insieme $\{0,\dots,d-1\}$ dei simboli di codice, dove $d > 1$ è la base del codice.\\
     Per effettuare la traduzione viene usata una \textbf{funzione di codifica}, che mappa i simboli sorgente in parole di codice
 
     $$c : \mathbb{X} \rightarrow \{0,...,d-1\}^+$$
+    Dove $\{0,\dots,d-1\}^+$ è formalmente
 
-    Dove $\{0,...,d-1\}^+$ è formalmente
+    $$\bigcup_{n=1}^{+\infty}\{0,\dots,d-1\}^n$$
 
-    $$\bigcup_{n=1}^{+\infty}\{0,...,d-1\}^n$$
-
-    \noindent L'obiettivo che ci poniamo è di \textbf{minimizzare} $l_c(x)$, ovvero la lunghezza della parola di codice per il simbolo $x\,\epsilon \, \mathbb{X}$. \\
+    \noindent L'obiettivo che ci poniamo è di \textbf{minimizzare} $l_c(x)$, ovvero la lunghezza della parola di codice per il simbolo $x \in \mathbb{X}$. \\
 
     \noindent Risulta naturale cercare di assegnare a dei simboli che sono usati più spesso una parola di codice con lunghezza minore. Viceversa, a simboli usati raramente associamo lunghezze maggiori. Questo perché il nostro obiettivo è di minimizzare la lunghezza media pesata per la probabilità di utilizzo del simbolo, in poche parole il valore atteso. \\
 
-    \noindent Shannon definisce come $p(x)$ la probabilità di generazione di un simbolo. Inoltre assume, per semplicità, l'indipendenza di un simbolo dall'altro. Ovvero, la generezione di un simbolo $x \, \epsilon \, \mathbb{X}$ non influenza la generazione successiva di un simbolo $y \, \epsilon \, \mathbb{X}$
+    \noindent Shannon definisce come $p(x)$ la probabilità di generazione di un simbolo. Inoltre assume, per semplicità, l'indipendenza di un simbolo dall'altro. Ovvero, la generazione di un simbolo $x \in \mathbb{X}$ non influenza la generazione successiva di un simbolo $y \in \mathbb{X}$
     \\
 
     \noindent Definiamo la variabile casuale  $X\,:\, \mathbb{X} \, \rightarrow \mathbb{R}$. Questa rappresenta l'estrazione di 1 simbolo dalla sorgente. \\
-    p diventa quindi la distribuzione di probabilità dei simboli della sorgente, mentre definiamo $P_n$ come  $P_n(x_1,...,x_n) = p(x_1)...p(x_n)$. Questo vale perché l'estrazioni sono indipendenti. \\
-    $P_n$ è la distribuzione sui messaggi $\mathbb{X}^n$. \\
+    $p$ diventa quindi la distribuzione di probabilità dei simboli della sorgente, mentre definiamo $P_n$ come  $P_n(x_1,\dots,x_n) = p(x_1)\dots p(x_n)$. Questo vale perché l'estrazioni sono indipendenti. \\
+    $P_n$ è la distribuzione dei messaggi $\mathbb{X}^n$. \\
 
-    \noindent Per avere una notazione più compatta, definiamo $\mathbb{D}$ come l'insieme $\{0,..,d-1\}$ dei simboli di codice con base d. Quindi c può essere definita come  $$c\,:\, \mathbb{X} \, \rightarrow \, \mathbb{D}^+$$
+    \noindent Per avere una notazione più compatta, definiamo $\mathbb{D}$ come l'insieme $\{0,\dots,d-1\}$ dei simboli di codice con base d. Quindi c può essere definita come  $$c\,:\, \mathbb{X} \, \rightarrow \, \mathbb{D}^+$$
 
     \section{Problema codifica sorgente}
 
@@ -195,20 +194,20 @@
     \end{tcolorbox}
     \vspace{5px}
 
-    \noindent Il problema, così formulato, si presta a una soluzione banale e inutile! Infatti, basta dire che $c(x)\,=\,0$ per gni $x\,\epsilon\,\mathbb{X}$. Bisogna introdurre delle limitazioni.
+    \noindent Il problema, così formulato, si presta a una soluzione banale e inutile! Infatti, basta dire che $c(x)\,=\,0$ per gni $x \in \mathbb{X}$. Bisogna introdurre delle limitazioni.
 
     \section{Limitazioni}
 
     La prima limitazione che introduciamo è che \textbf{il codice deve essere non singolare}. Un codice $c\,:\,\mathbb{X}\,\rightarrow \, \mathbb{D}^+$ è non signolare se a simboli della sorgente corrispondono parole di codice distinte (funzione iniettiva).  \\
     \\
-    Formalmente, $$\forall x,x^{'} \, \epsilon \mathbb{X}\,: x\neq x^{'} vale \, c(x) \neq c(x^{'})$$
+    Formalmente, $$\forall x,x^{'} \, \in \mathbb{X}\,: x\neq x^{'} \; \text{vale} \; c(x) \neq c(x^{'})$$
 
     \chapter{Lezione II}
     \label{cap:Lezione II}
 
     \section{Limitazioni}
 
-    La limitazione imposta la scorsa lezione, ovvero che il codice sia non singolare, non è sufficiente. Infatti, senza nessun'altra limitazione non possiamo decodificare un in modo univoco.  \\
+    La limitazione imposta la scorsa lezione, ovvero che il codice sia non singolare, non è sufficiente. Infatti, senza nessun'altra limitazione non possiamo decodificare una parola in modo univoco.  \\
 
     \begin{exmp}
         Data una sorgente che produce due simboli: $A$ e $B$.
@@ -218,10 +217,10 @@
 
     \noindent Introduciamo un'altra limitazione, questa volta sulla \textbf{estensione di un codice}.  L'estensione del codice $c\,:\, \mathbb{X}\,\rightarrow \, \mathbb{D}^+$ è definita come $$\mathbb{C}\, : \, \mathbb{X}^+ \, \rightarrow \mathbb{D}^+$$
     Imponiamo che il codice sia \textbf{univocamente decodificabile}. Si dice che il codice è univocamente decodifcabile se e solo se la sua estensione è non singolare. Questa proprietà implica che
-    $$\forall \, y \, \epsilon \, \mathbb{D}^+ \,\,\text{c'è al più un  unico messaggio}
-    x\,\epsilon\,\mathbb{X}^+ \,: \, \mathbb{C}(x) = y$$
+    $$\forall \, y \, \in \, \mathbb{D}^+ \; \text{c'è al più un  unico messaggio} \;
+    x\,\in \,\mathbb{X}^+ \,: \, \mathbb{C}(x) = y$$
 
-    \noindent Per determinare se un codice è univocamente decodificabile si usa l'algoritmo di \textbf{Sardinas-Patterson}. L'algoritmo ha complessita $O(mL)$, dove $m$ è il numero delle parole di codice ($|\mathbb{X}|$) e $L$ è la somma delle loro lunghezze ($\sum_{x\epsilon\mathbb{X}} l(x)$). \\
+    \noindent Per determinare se un codice è univocamente decodificabile si usa l'algoritmo di \textbf{Sardinas-Patterson}. L'algoritmo ha complessita $O(mL)$, dove $m$ è il numero delle parole di codice (i.e. $|\mathbb{X}|$) e $L$ è la somma delle loro lunghezze (i.e. $\sum_{x\in\mathbb{X}} l(x)$). \\
 
     \begin{center}
         \def\firstcircle{(0,0) circle (1.5cm)}
@@ -238,7 +237,7 @@
     \vspace{10px}
 
     \noindent In questo modo riusciamo a distinguere i simboli all'interno di una stringa in fase di decodifica. Il problema è che riusciamo solamente se abbiamo tutta la stringa. Questo non è sempre possibile (si pensi a situazioni in cui le informazioni arrivino in streaming senza terminare). \\ Dobbiamo aggiungere una limitazione che impedisca a una parola di codice di essere prefissa di un'altra. \\
-    Introduciamo il concetto i \textbf{codice istantaneo}. Un codice si dice istantaneo se nessuna parola è prefissa di un'altra.
+    Introduciamo il concetto di \textbf{codice istantaneo}. Un codice si dice istantaneo se nessuna parola è prefissa di un'altra.
 
     \section{Codici istantanei}
 
@@ -257,20 +256,20 @@
         Possiamo escludere il caso in cui c sia non singolare. Infatti, in questo caso, avrei 2 simboli che codificano nella stessa parola di codice. Due parole uguali sono l'una il prefisso dell'altra. \\ \\
         A questo punto resta da dimostrare che se $c$ non è univocamente decodificabile allora non è istantaneo. \\
         Assumiamo che c sia non univocamente decodificabile, quindi \begin{equation} \label{eq:one}
-        \exists \, x \,,\,x^{'} \, \epsilon \, \mathbb{X}\, \text{con} \, x \neq x^{'} | \ \mathbb{C}(x) = \mathbb{C}(x^{'})
+        \exists \, x \,,\,x' \, \in \, \mathbb{X}\; \text{con} \; x \neq x' | \ \mathbb{C}(x) = \mathbb{C}(x')
         \end{equation}
-        $x$ e $x^{'}$ possono differire in 2 modi soltanto:
+        $x$ e $x'$ possono differire in 2 modi soltanto:
         \begin{itemize}
             \item Un messaggio è prefisso dell'altro
             \item C'è almeno uuna posizione in cui i 2 messaggi differiscono
         \end{itemize}
-        Se $\mathbb{C}(x) = \mathbb{C}(x^{'})$ e $x$ è prefisso di $x^{'}$ (o viceversa) allora i restanti simboli di x dovrebbero \underline{per forza} essere mappati in parola vuota. \\ Ma questo non è possibile, per costruzione infatti sappiamo che un simbolo non può essere mappato in una parola vuota. Ma anche se cambiassimo la nostra definizione, e ammettessimo la parola vuota, questo ci porterebbe a dire che il codice è non istantaneo, perché la parola vuota è prefisso di tutte le parole.
+        Se $\mathbb{C}(x) = \mathbb{C}(x')$ e $x$ è prefisso di $x'$ (o viceversa) allora i restanti simboli di x dovrebbero \underline{per forza} essere mappati in parola vuota. \\ Ma questo non è possibile, per costruzione infatti sappiamo che un simbolo non può essere mappato in una parola vuota. Ma anche se cambiassimo la nostra definizione, e ammettessimo la parola vuota, questo ci porterebbe a dire che il codice è non istantaneo, perché la parola vuota è prefisso di tutte le parole.
         \\ \\
-        L'unico caso possibile è quindi il secondo. \\ Siccome $x \neq x^{'}$, c'è una posizione i tale che $x_i \neq x_i^{'}$.
+        L'unico caso possibile è quindi il secondo. \\ Siccome $x \neq x'$, c'è una posizione i tale che $x_i \neq x_i'$.
         \\ \\
-        Allora fino alla posizione i, ovvreo per $j = 1,..,i-1$ si ha che
+        Allora fino alla posizione i, ovvero per $j = 1,\dots,i-1$ si ha che
         $$\mathbb{C}(x_j) = \mathbb{C}(x_j^{i})$$
-        Se però, $\mathbb{C}(x) = \mathbb{C}(x^{i})$, allora $c(x_i)$ è prefisso di $c(x_i^{'})$ (o viceversa). \\ \\
+        Se però, $\mathbb{C}(x) = \mathbb{C}(x^{i})$, allora $c(x_i)$ è prefisso di $c(x_i')$ (o viceversa). \\ \\
 
         \noindent Questo perché, se fino alla posizione j sono uguale, e invece a i sono diverso, condizione necessaria affinché valga  $\mathbb{C}(x) = \mathbb{C}(x^{i})$ è che da j in poi, qualunque cosa ci sia dopo, io la codifico uguale. Questo non può succedere se $c(x_i)$ non è prefisso di $c(x_i^{i})$ o viceversa.
         \\ \\
@@ -293,7 +292,7 @@
 
     \noindent Dimostriamo il lato $\rightarrow$.
     \begin{dimo}
-        Sia $l_{max} = \max_{i=1,...,m} l_c(x_i)$
+        Sia $l_{max} = \max_{i=1,\dots,m} l_c(x_i)$
 
         \noindent
         Possiamo costruire un albero D-ario completo e di profondità $l_{max}$. Ogni nodo rappresenta una parola \textbf{possibile} di codice. Non è detto che sia utilizzata.
@@ -355,6 +354,7 @@
         \end{figure}
     \end{dimo}
 
+    \noindent
     Si noti come ogni parola utilizzata (indicata con un nodo colorato in arancione) \underline{non} ha come radice del sottoalbero un'altra parola valida. Cioè, se presa una parola $P_i$ percorriamo l'albero verso l'alto non troveremo un nodo associato a un'altra parola $P_j$.
     Le foglie del sottoalbero di cui una parola $P_i$ è radice le mettiamo nell'insieme $A_i$. Il numero di foglie in $A_i$ è dato da $D^{l_{max} - l_i}$, dove $l_{max}$ è la profondità massima dell'albero (quindi l'altezza) e $l_i$ è la profondità del nodo associato alla parola $P_i$. Sappiamo che il numero totale di foglie è $D^{l_{max}}$.
 
@@ -364,7 +364,7 @@
     Quindi
 
     $$\sum_{i = 1}^n D^{l_{max} - l_i}\leq D^{l_max}$$
-    Divendo per $D^{l_{max}}$ ambo i membri otteniamo
+    Dividendo per $D^{l_{max}}$ ambo i membri otteniamo
 
     $$\sum_{i = 1}^n D^{-l_i} \leq 1$$
 
@@ -919,7 +919,8 @@
         \textbf{\textcolor{red}{FATTO} }
         \vspace{5px}
         \begin{center}
-            Sia $c'$ un codice $D$-ario di Huffman per la sorgente $\mathbb{X}' \,=\, \{\listina{x}{m-d+1}\}$ con probabilità $p_1 \geq \dots \geq p_{m-d+1}$. Sia \sorgente la sorgente ottenuta togliendo da $\mathbb{X}'$ il simbolo $x_k$ e aggiungendo $d$ nuovi simboli, $x_{m-d+2} \dots x_{m+1}$, con probabilità $p_{m-d+2},\dots,p_{m+1}$, tali che $p(.) > 0$ e anche che $p(.) < p_{m-d+1}$. Inoltre deve valere che $p_{m-d+2} + \dots + p_{m+1} = p_k$.
+
+            Sia $c'$ un codice $D$-ario di Huffman per la sorgente $\mathbb{X}' \,=\, \{\listina{x}{m-d+1}\}$ con probabilità $p_1 \geq \dots \geq p_{m-d+1}$. Sia \sorgente $\;$ la sorgente ottenuta togliendo da $\mathbb{X}'$ il simbolo $x_k$ e aggiungendo $d$ nuovi simboli, $x_{m-d+2} \dots x_{m+1}$, con probabilità $p_{m-d+2},\dots,p_{m+1}$, tali che $p(.) > 0$ e anche che $p(.) < p_{m-d+1}$. Inoltre deve valere che $p_{m-d+2} + \dots + p_{m+1} = p_k$.
             Allora vale che
 
             $$ c(x) = \begin{cases}
@@ -1250,7 +1251,7 @@
             \item La somma dei $p(a_i)$ sia $= 1$.
             \item La somma delle righe della matrice è uguale a $1$.
         \end{enumerate}
-        La prima riga della matrice dato non fa $1$!
+        La prima riga della matrice data non fa $1$!
     \end{es}
 
 
@@ -1536,10 +1537,12 @@
     \begin{defi}
         La \textbf{capacità} del canale indica quanta informazione possiamo mandare sul canale.
     \end{defi}
+
+    \noindent
     Formalmente è definita come
 
     $$C = \max_{p(x)} I(x,y)$$
-    dove con $\max_{p(x)}$ prendiamo in considerazione tutte le possibili distribuzioni did $p(x)$, ovvero di probabilità di generare i simboli sorgenti. Calcoliamo le capacità per i canali precedenti:
+    dove con $\max_{p(x)}$ prendiamo in considerazione tutte le possibili distribuzioni di $p(x)$, ovvero di probabilità di generare i simboli sorgenti. Calcoliamo le capacità per i canali precedenti:
 
     \begin{itemize}
         \item Canale binario senza rumore. Riscriviamo la capacità esprimendo l'informazione mutua
@@ -1709,7 +1712,7 @@
 %Nodes
         \node[mainsquarednode](A){};
         \node[squarednode](B) at(-2,0) {COMPRESSIONE};
-        \node[squarednode](C)[right=of B]{RIDONDANZA};
+        \node[squarednode](C) at (2,0){RIDONDANZA};
         \draw[->] (-5,0) -- (A) node[near start, above]{MSG};
 
         \draw[->] (-2,-3) -- (-2,-1.4) node[near start, sloped,above]{FATTA!};
@@ -1770,6 +1773,8 @@
         $$\sum_{i = 0}^{\lc \frac{n}{2} \rc} \binom{n}{2i}p^{2i} (1-p)^{n-2i}$$
         Ovvero usiamo una sommatoria da $0$ a $\frac{n}{2}$ e consideriamo i numeri pari moltiplicando per $2$ l'indice all'interno dell'espressione. Così, se $n$ fosse 10, la sommatoria andrebbe a $0$ a $5$ e noi considereremmo solo i casi in cui gli errori sono $0,2,4,6,8,10$, proprio come volevamo.
     \end{es}
+
+    \noindent
     Questo ultimo esercizio è utile in certe situazioni.
 
     \section{Codici di correzione}
@@ -1904,7 +1909,7 @@
         \end{center}
 
         \noindent
-        $63\mod_{37} = 26$ quindi è sbagliato, dato che dovrebbe essere $0$.
+        $63 \equiv_{37} 26$ quindi è sbagliato, dato che dovrebbe essere $0$.
     \end{es}
 
     \begin{es}
