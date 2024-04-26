@@ -1,5 +1,9 @@
 Questa repository contiene i miei appunti del corso di **teoria dell'informazione** tenutosi nell'anno accademico 2023-2024.
+Alcune lezioni sono integrate con gli appunti di altri studenti
 
-Il corso comprende 16 lezioni, la prima, introduttiva, è irrilevante e quindi non la inserirò.
+- [Ester Passini](https://github.com/EsterPassini) per la lezione 14.
+- [Luca Corradini] (https://github.com/LucaCorra02) per la lezione 15.
 
-Spero di riuscire a completare l'inserimento di tutte le lezioni e di renderle fruibili nel minor tempo possibile.
+Il corso comprende 16 lezioni, la prima, introduttiva, è irrilevante e quindi non è stata inserita.
+[Qui]{https://visconti.di.unimi.it/} trovate la pagina ufficiale del corso, tenuto dal professore Andrea Visconti.
+
