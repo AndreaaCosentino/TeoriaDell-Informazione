@@ -2084,12 +2084,12 @@
 
     \begin{center}
         \begin{tikzpicture}
-            \node[] (A) at (-3,0) {$(x_1,x_2,x_3,$};
-            \node[right of=A] (B) at (-2.4,0) {$x_4,x_5,x_6)$};
+            \node[] (A) at (-3.5,0) {$(x_1,x_2,x_3,$};
+            \node[right of=A] (B) at (-2.6,0) {$x_4,x_5,x_6)$};
 
             \draw[decorate,decoration={brace,mirror,raise=0.5ex}] (A.south west) -- (A.south east)
             node[midway,below=1ex] (D) {BIT} ;
-            \node[below of=D] at (-2.9,-0.2) {DI INFORMAZIONE};
+            \node[below of=D] at (-3.3,-0.2) {DI INFORMAZIONE};
             \draw[decorate,decoration={brace,,raise=0.5ex}] (B.north west) -- (B.north east)
             node[midway,above=1ex] (E) {CONTROLLO} ;
             \node[above of=E] at (-1.5,0.2) {BIT DI};
@@ -2215,12 +2215,12 @@
 
     \begin{center}
         \begin{tikzpicture}
-            \node[] (A) at (-3.15,0) {$(p_1,p_2,p_3,$};
+            \node[] (A) at (-3.40,0) {$(p_1,p_2,p_3,$};
             \node[right of=A] (B) at (-2.4,0) {$s_1,s_2,s_3,s_4)$};
 
             \draw[decorate,decoration={brace,mirror,raise=0.5ex}] (A.south west) -- (A.south east)
             node[midway,below=1ex] (D) {BIT DI} ;
-            \node[below of=D] at (-2.9,-0.2) {CONTROLLO};
+            \node[below of=D] at (-3.40,-0.2) {CONTROLLO};
             \draw[decorate,decoration={brace,,raise=0.5ex}] (B.north west) -- (B.north east)
             node[midway,above=1ex] (E) {INFORMAZIONE} ;
             \node[above of=E] at (-1.5,0.2) {BIT DI};
@@ -2678,5 +2678,259 @@
     \begin{es}
         Dato il codice $(7,3)$ con $g(x) = x^4 + x^2 + x + 1$, trovare tutte le possibili parole di codice.
     \end{es}
+
+
+    \chapter{Lezione XV}
+
+    \section{Correzione codice ciclico}
+
+    Sia $c$ un codice ciclico $(7,4)$. Prima di tutto vogliamo trovare il polinomio generatore. Sappiamo che il grado di $g(x)$ è
+
+    $$\text{grado}[g(x)] = 7-4 = 3$$
+    Inoltre $g(x)$ deve dividere $x^n - 1 = x^7 - 1$ (oppure $x^7 + 1$ dato che siamo in binario e sono uguali). Sapendo che
+
+    $$x^7 - 1 = (x+1) (x^3 + x + 1) (x^3 + x^2 + 1)$$
+    Abbiamo due possibili candidati, ovvero $x^3 + x +1$ e $x^3 + x^2 + 1$. Ne scegliamo uno a caso, per esempio $x^3 + x^2 +1$. A questo punto possiamo definire le parole di codice $p(x)$ come
+
+    $$p(x) = g(x) \cdot a(x)$$
+    Dove $a(x)$ è il messaggio non codificato. Assumiamo di volere trasmettere $x^6 + x^5 + x^4 + x^3 + x^2 + x + 1$, e che ci sia del rumore e $x^4$ venga sbagliato. Come lo correggiamo?
+
+    \subsection{Algoritmo di correzione}
+    Cominciamo con il dare la seguente definizione
+
+    \begin{defi}
+        Il \textbf{peso di Hamming} è il numero di $1$ che una parola ha.
+    \end{defi}
+
+    \noindent
+    Per esempio la parola $01000100$ ha peso di hamming $2$ (scriviamo $\omega(01000100) = 2$ per indicarlo, in generale $\omega(s(x))$). Prima di definire l'algoritmo di correzione, diciamo che il resto $r(x)$ della divisione tra $p(x)$ e $g(x)$ è anche indicato con $s(x)$, ovvero la \textbf{sindrome}.
+    Quindi, data una parola $p(x)$ per correggerla utilizziamo il seguente algoritmo:
+
+    \begin{enumerate}
+        \item Calcoliamo $s(x)$.
+        \item Se $\omega(s(x)) \leq t$ , dove $t$ è il numero di errori, allora possiamo correggere la parola. Altrimenti continuiamo con l'algoritmo.
+        \item Se $\omega(s(x)) > t$ allora prendiamo $k = 0$ e lo incrementiamo di $1$. Poi facciamo shift ciclico a destra (che poi nei fatti il prof. lo fa a sinistra?) della parola. Otteniamo $p'(x)$.
+        \item Calcoliamo $s'(x)$.
+        \item Ripartiamo dal punto \circled{2}.
+    \end{enumerate}
+    Vale il seguente teorema
+
+    \vspace{5px}
+    \begin{tcolorbox}
+        \textbf{\textcolor{red}{Teorema} Termine algoritmo }
+        \vspace{5px}
+        \begin{center}
+
+            Dopo un certo numero di passi il codice ciclico è tale che $\omega(s(x)) \leq t$.
+
+        \end{center}
+    \end{tcolorbox}
+
+    \noindent
+    Una volta terminato l'algoritmo, per correggere la parola basta fare
+
+    $$p(x) = y(x) + ShiftSinistra_k(s_f(x))$$
+    $$= y(x) + ShiftDestra_{n-k}(s_f(x))$$
+    dove $y(x)$ è la parola ricevuta, $k$ il contatore e $s_f$ l'ultima sindrome calcolata.
+
+    \begin{exmp}
+        Dato $g(x) = x^3 + x^2 + 1$ e la parola ricevuta $y(x) = x^6 + x^5 + x^3 + x^2 + x + 1$ applicare l'algoritmo per correggerla, sapendoo che vogliamo correggere $1$ errore ($t = 1$). Cominciamo con la prima divisione.
+
+        \begin{center}
+            \begin{tikzpicture}
+                \node[] at (-3.15,0) {$x^{6} + x^5 + x^3 + x^2 + x + 1$};
+                \node[] at (0.35,0) {$x^3 + x^2 + 1$};
+                \node[] at (-4.30,-0.75) {$x^6 + x^5 + x^3$};
+
+                \node[] at (-0.45,-0.75) {$x^3$};
+                \draw[] (-0.75,0.5) -- (-0.75, -3);
+                \draw[] (-0.75,-0.3) -- (2.50,-0.3);
+                \draw[] (-0.75,-1) -- (-5.50,-1);
+                \node[] at (-3.85,-1.30) {$s(x) = x^2 + x + 1$};
+            \end{tikzpicture}
+        \end{center}
+
+        \noindent
+        La sindrome ha peso $\omega(s(x)) = 3$. $t$ è $1$ e quindi $3 > 1$, procediamo con l'algoritmo. Poniamo $k = 0$ e la incrementiamo di $1$, $k = 1$. Shiftiamo la parola e otteniamo
+        $$p'(x) = p(x) \cdot x - x^7 + 1$$
+        $$= x^6 + x^4 + x^3 + x^2 + x + 1$$
+        dove sommiamo $-x^7 + 1 $ perché è uno shift ciclico (leviamo l'elemento $x^7$ che è fuori dal campo e sommiamo $1$ per farlo riapparire dall'altra parte).
+        Continuiamo con la seconda divisione
+
+        \begin{center}
+            \begin{tikzpicture}
+                \node[] at (-3.15,0) {$x^{6} + x^4 + x^3 + x^2 + x + 1$};
+                \node[] at (0.35,0) {$x^3 + x^2 + 1$};
+                \node[] at (-4.30,-0.75) {$x^6 + x^5 + x^3$};
+
+                \node[] at (0.0,-0.75) {$x^3 + x^2$};
+                \draw[] (-0.75,0.5) -- (-0.75, -3);
+                \draw[] (-0.75,-0.3) -- (2.50,-0.3);
+                \draw[] (-0.75,-1) -- (-5.56,-1);
+                \node[] at (-3.55,-1.30) {$x^5 + x^4 + x^2 + x +1$};
+                \node[] at (-4.30,-1.80) {$x^5 + x^4 + x^2$};
+                \draw[] (-0.75,-2.20) -- (-5.5,-2.20);
+                \node[] at (-4.15,-2.50) {$s'(x) = x + 1$};
+            \end{tikzpicture}
+        \end{center}
+
+        \noindent
+        Il peso è $\omega(s'(x)) = 2$, quindi $t < \omega(s'(x))$.  $k$ diventa $k = 2$ e
+        $$p''(x) = x^5 + x^4 + x^2 + x + 1$$
+        Dividiamo $p''(x)$:
+
+        \begin{center}
+            \begin{tikzpicture}
+                \node[] at (-3.10,0) {$x^{5} + x^4 + x^3 + x^2 + x + 1$};
+                \node[] at (0.45,0) {$x^3 + x^2 + 1$};
+                \node[] at (-4.28,-0.75) {$x^5 + x^4 + x^2$};
+
+                \node[] at (0,-0.75) {$x^2 + 1$};
+                \draw[] (-0.75,0.5) -- (-0.75, -3);
+                \draw[] (-0.75,-0.3) -- (2.50,-0.3);
+                \draw[] (-0.75,-1) -- (-5.5,-1);
+                \node[] at (-4.45,-1.30) {$x^3 + x + 1$};
+                \node[] at (-4.375,-1.80) {$x^3 + x^2 + 1$};
+                \draw[] (-0.75,-2.20) -- (-5.5,-2.20);
+                \node[] at (-4,-2.50) {$s''(x) = x^2 + x$};
+            \end{tikzpicture}
+        \end{center}
+
+        \noindent
+        Il peso è $\omega(s'(x)) = 2$, quindi $t < \omega(s'(x))$.  $k$ diventa $k = 3$ e
+        $$p'''(x) = x^6 + x^5 + x^4 + x^3 + x^2 + x$$
+        Dividiamo $p'''(x)$:
+
+        \begin{center}
+            \begin{tikzpicture}
+                \node[] at (-3.20,0) {$x^{6} + x^5 + x^4 + x^3 + x^2 + x$};
+                \node[] at (0.35,0) {$x^3 + x^2 + 1$};
+                \node[] at (-4.45,-0.75) {$x^6 + x^5 + x^3$};
+
+                \node[] at (0.30,-0.75) {$x^3 + x + 1$};
+                \draw[] (-0.75,0.5) -- (-0.75, -5);
+                \draw[] (-0.75,-0.3) -- (2.50,-0.3);
+                \draw[] (-0.75,-1) -- (-5.60,-1);
+                \node[] at (-4.55,-1.30) {$x^4 + x^2 + x$};
+                \node[] at (-4.55,-1.80) {$x^4 + x^3 + x$};
+                \draw[] (-0.75,-2.20) -- (-5.60,-2.20);
+                \node[] at (-4.90,-2.40) {$x^3 + x^2$};
+                \node[] at (-4.55,-2.85) {$x^3 + x^2 + 1$};
+                \draw[] (-0.75,-3.10) -- (-5.60,-3.10);
+                \node[] at (-4.70,-3.40) {$s'''(x) = 1$};
+            \end{tikzpicture}
+        \end{center}
+
+        \noindent
+        Il peso è $\omega(s'(x)) = 1$, quindi $t = \omega(s'(x))$.  Terminiamo l'algoritmo. Possiamo ora correggere la parola. Abbiamo $k = 3$, facciamo $n-k$ shift a destra (che sono a sinistra in realtà), shiftiamo $p(x)$ di $4$ posizioni.
+
+        $$p(x) + 1 \cdot x^4 = x^6 + x^5 + x^4 + x^3 + x^2 + 1$$
+        che è il messaggio che è stato inviato.
+    \end{exmp}
+
+    \begin{es}
+        Si svolga lo stesso esercizio con $g(x) = x^6 + x^5 + x^4 + x^3 + x^2 + x + 1$, $y(x) = x^7 - 1$ e $t = 3$.
+    \end{es}
+
+    \section{Codici BCH}
+    Se questa parte vi sembra confusionaria è perché lo è. Il professore l'ha spiegata in maniera sbrigativa all'ultima lezione.
+
+    \vspace{10px}
+
+    \noindent
+    I codici $BCH$ vengono costruiti in base a quanti errori vogliamo correggere. Se vogliamo correggere $t$ errori, le parole devono essere distanti almeno $2t + 1$ tra di loro.
+
+    \begin{center}
+        \begin{tikzpicture}
+            \draw[] (-2,0) circle [radius=1];
+            \draw[] (2,0) circle [radius=1];
+            \draw[->, thick] (-4,0) -- (4,0);
+            \node[above] at (-2,0) {$p_1$};
+            \node[above] at (2,0) {$p_2$};
+            \draw[-,thick] (-2,0.1) -- (-2,-0.1);
+            \draw[-,thick] (2,0.1) -- (2,-0.1);
+            \node[] at (0,1.5) {SFERE DI COLLISIONE};
+        \end{tikzpicture}
+    \end{center}
+
+    \noindent
+    Se le sfere di collisione di due parole collidono e non sono almeno di raggio $t$ non riusciamo a correggerle.
+
+
+    \subsection{Ampliamento algebrico}
+    Dato un polinomio che non ha radice nel campo gliene imponiamo una noi. Quindi prendiamo un polinomio irriducibile e supponiamo che abbia come soluzione una certa radice.
+    Le radici devono essere tali che
+
+    $$\beta_1,\beta_2,\dots,\beta_m \equiv_n 1$$
+    Ma quante radici ci servono? Dipende dal numero di errori che vogliamo correggere e dal campo in cui mi trovo. Ad esempio se siamo in $GF(11)$ e vogliamo correggere $2$ errori, il numero $M$ di radici che ci servono è il più piccolo numero tale che
+
+    $$2^M \equiv_{11} 1$$
+    In questo caso è $10$.
+    A questo punto troviamo gli elementi del campo e costruiamo $g(x)$ come il minimo comune multiplo tra gli elementi del campo.
+
+    \begin{exmp}
+        Ampliamo il campo di Galois $(2)$, con coefficienti in $\mathbb{Z}_2$. Scegliamo un polinomio irriducibile di grado $3$, così otteniamo $GF(2^3)$ (che interessa a noi dato che lavoriamo sui byte),
+
+        $$p(x) = x^3 + x + 1$$
+        Definiamo gli elementi del campo , ovvero tutti i polinomi di grado minore di $3$:
+
+        $$\{0,1,\beta, \beta + 1, \beta^2 + \beta^2 + 1, \beta^2 + \beta, \beta^2 + \beta + 1\}$$
+        In questo modo abbiamo effettuato l'espansione, passando da $2$ elementi del campo $GF(2)$ (ovvero $0$ e $1$) a $8$ elementi in $GF(2^3)$. Troviamo ora le radici del campo espanso. Imponiamo che $\beta$ sia radice ponendo $p(\beta) = 0$:
+
+        $$p(\beta) = \beta^3 + \beta + 1 = 0$$
+        $$\beta^3 = \beta + 1$$
+        Siccome grado deve essere $<3$ scriviamo
+        $$\beta \cdot \beta^2 = \beta + 1$$
+        A questo punto vogliamo trovare qual è l'ordine del campo. Quindi cerchiamo una potenza tale che $\beta^i = 1$.
+
+        $$\beta^4 = \beta^3 \cdot \beta = (\beta + 1) \cdot \beta = \beta^2 + \beta $$
+        $$\beta^5 = \beta^2 + \beta + 1$$
+        $$\beta^6 = \beta^2 + 1$$
+        $$\beta^7 = 1$$
+        Abbiamo trovato l'ordine dal campo, ovvero $7$, dato che $\beta$ elevato alla $7$ restituisce $1$.
+        Da qui in poi le potenze si ripetono, quindi $\beta^8 = \beta$, $\beta^9 = \beta^2$, $\beta^{10} = \beta + 1$, etc... . In questo modo abbiamo costruito una mappatura (la colonna più a destra è la rappresentazione in byte)
+
+        \begin{center}
+
+            \begin{tabular}{l|l|l}
+
+                0  & 0 & 000 \\
+                1  & $\beta^7$ & 001 \\
+                $\beta$ & $\beta^1$ & 010 \\
+                $\beta + 1$ & $\beta^3$ & 011 \\
+                $\beta^2$ & $\beta^2$ & 100 \\
+                $\beta^2 + 1$ & $\beta^6$ & 101 \\
+                $\beta^2 + \beta$ & $\beta^4$ & 110 \\
+                $\beta^2 + \beta + 1$ & $\beta^5$ & 111
+            \end{tabular}
+        \end{center}
+
+        \noindent
+        La mappatura ci permette calcoli più veloci, ad esempio:
+
+        $$(\beta^2 + 1) (\beta^2 + \beta + 1) = $$
+        $$= \beta^6 \cdot \beta^5 = \beta^7 \cdot \beta^4$$
+        $$= \beta^4 = \beta^2 + \beta$$
+    \end{exmp}
+
+    \vspace{5px}
+    \begin{tcolorbox}
+        \textbf{\textcolor{red}{Teorema} Costruzione codici BCH }
+        \vspace{5px}
+        \begin{center}
+
+            $\forall n \in \mathbb{N}$, dato $r$ numero primo e $GF(r^{\phi(n)})$ (dove $\phi$ è la funzione di Eulero), siano $\beta^1,\dots,\beta^n$ radici per costruire il codice ciclico. Allora $\omega(t)$ è l'insieme dei polinomi
+
+            $$\omega(w) = \omega_0 + \omega_1 x + \dots + \omega_{n-1} x^{n-1}$$
+            tali che hanno radici $\omega(\beta^1)=\omega(\beta^2) = \dots = \omega(\beta^n) = 0$.
+            Queste formano esattamente un codice ciclico che corregge $n$ errori.
+
+        \end{center}
+    \end{tcolorbox}
+
+    \clearpage
+    \pagecolor{color}
+    \blankpage
+    \nopagecolor
 
 \end{document}
