@@ -2,7 +2,7 @@ Questa repository contiene i miei appunti del corso di **teoria dell'informazion
 Alcune lezioni sono integrate con gli appunti di altri studenti
 
 - [Ester Passini](https://github.com/EsterPassini) per la lezione 14.
-- [Luca Corradini] (https://github.com/LucaCorra02) per la lezione 15.
+- [Luca Corradini](https://github.com/LucaCorra02) per la lezione 15.
 
 Il corso comprende 16 lezioni, la prima, introduttiva, è irrilevante e quindi non è stata inserita.
 [Qui]{https://visconti.di.unimi.it/} trovate la pagina ufficiale del corso, tenuto dal professore Andrea Visconti.
