@@ -93,7 +93,7 @@
 
     \vspace{5px}
     \noindent
-    Shannon cerca di risolvere questo problema usando l'approccio divide et impera. Non è detto che questo approccio sia quello giusto. Infatti, non c'è garanzia che la soluzione ottimale dei due sottoproblemi sia tale che , se messe assieme, diano la soluzione ottimale per il problema. Questo perché potremmo non sfruttare possibili vantaggi di un problema sull'altro. Vale il seguente teorema:
+    Shannon cerca di risolvere questo problema usando l'approccio divide et impera. Non è detto che questo approccio sia quello giusto. Infatti, non c'è garanzia che la soluzione ottimale dei due sottoproblemi sia tale che , se messe assieme, diano la soluzione ottimale per il problema. Questo perché potremmo non sfruttare possibili vantaggi di un problema sull'altro. Tuttavia nel nostro caso vale il seguente teorema:
     \vspace{5px}
     \begin{tcolorbox}
         \textbf{\textcolor{red}{TEOREMA} di codifica sorgente e canale}
@@ -116,16 +116,16 @@
         \end{center}
     \end{tcolorbox}
     \vspace{5px}
-    \noindent Questo è dovuto al fatto che l'informazione non è uniformemente distribuita. Ci sono parti della codifica inutile. Per esempio, se codifichiamoun cielo tutto azzurro, non abbiamo bisogno di dire che ogni pixel è di colore azzurro, ma ci basta dire che una porzione di una foto è tutta azzurra.
+    \noindent Questo è dovuto al fatto che l'informazione non è uniformemente distribuita. Ci sono parti della codifica inutile. Per esempio, se codifichiamo un cielo tutto azzurro, non abbiamo bisogno di dire che ogni pixel è di colore azzurro, ma ci basta dire che una porzione di una foto è tutta azzurra.
     \\
-    La codidfica, cioè la rimozione della ridondanza, va ad amplificare il problema del rumore. Ogni bit perso è significativo. Per risolvere il problema di channel coding useremo il secondo teorema di Shannon. Anche questo lo riportiamo, per ora, in modo informale.
+    La codifica, cioè la rimozione della ridondanza, va ad amplificare il problema del rumore. Ogni bit perso è significativo. Per risolvere il problema di channel coding useremo il secondo teorema di Shannon. Anche questo lo riportiamo, per ora, in modo informale.
 
     \vspace{5px}
     \begin{tcolorbox}
         \textbf{\textcolor{red}{TEOREMA} II teorema di Shannon}
         \vspace{5px}
         \begin{center}
-            Possiamo trasmettere con possibilità di errore piccola a piacere. Uitlizziamo una ridondanza, controllata in base alla distorsione del canale.
+            Possiamo trasmettere con possibilità di errore piccola a piacere. Utilizziamo una ridondanza, controllata in base alla distorsione del canale.
         \end{center}
     \end{tcolorbox}
 
@@ -198,7 +198,7 @@
 
     \section{Limitazioni}
 
-    La prima limitazione che introduciamo è che \textbf{il codice deve essere non singolare}. Un codice $c\,:\,\mathbb{X}\,\rightarrow \, \mathbb{D}^+$ è non signolare se a simboli della sorgente corrispondono parole di codice distinte (funzione iniettiva).  \\
+    La prima limitazione che introduciamo è che \textbf{il codice deve essere non singolare}. Un codice $c\,:\,\mathbb{X}\,\rightarrow \, \mathbb{D}^+$ è non singolare se a simboli della sorgente corrispondono parole di codice distinte (funzione iniettiva).  \\
     \\
     Formalmente, $$\forall x,x^{'} \, \in \mathbb{X}\,: x\neq x^{'} \; \text{vale} \; c(x) \neq c(x^{'})$$
 
@@ -216,11 +216,11 @@
 
 
     \noindent Introduciamo un'altra limitazione, questa volta sulla \textbf{estensione di un codice}.  L'estensione del codice $c\,:\, \mathbb{X}\,\rightarrow \, \mathbb{D}^+$ è definita come $$\mathbb{C}\, : \, \mathbb{X}^+ \, \rightarrow \mathbb{D}^+$$
-    Imponiamo che il codice sia \textbf{univocamente decodificabile}. Si dice che il codice è univocamente decodifcabile se e solo se la sua estensione è non singolare. Questa proprietà implica che
+    Imponiamo che il codice sia \textbf{univocamente decodificabile}. Si dice che il codice è univocamente decodificabile se e solo se la sua estensione è non singolare. Questa proprietà implica che
     $$\forall \, y \, \in \, \mathbb{D}^+ \; \text{c'è al più un  unico messaggio} \;
     x\,\in \,\mathbb{X}^+ \,: \, \mathbb{C}(x) = y$$
 
-    \noindent Per determinare se un codice è univocamente decodificabile si usa l'algoritmo di \textbf{Sardinas-Patterson}. L'algoritmo ha complessita $O(mL)$, dove $m$ è il numero delle parole di codice (i.e. $|\mathbb{X}|$) e $L$ è la somma delle loro lunghezze (i.e. $\sum_{x\in\mathbb{X}} l(x)$). \\
+    \noindent Per determinare se un codice è univocamente decodificabile si usa l'algoritmo di \textbf{Sardinas-Patterson}. L'algoritmo ha complessità $O(mL)$, dove $m$ è il numero delle parole di codice (i.e. $|\mathbb{X}|$) e $L$ è la somma delle loro lunghezze (i.e. $\sum_{x\in\mathbb{X}} l(x)$). \\
 
     \begin{center}
         \def\firstcircle{(0,0) circle (1.5cm)}
@@ -253,7 +253,7 @@
 
     \begin{dimo}
         Sia $c\,:\,\mathbb{X} \, \rightarrow \, \mathbb{D}^+$ e $\mathbb{C}$ la sua estensione. \\ \\
-        Possiamo escludere il caso in cui c sia non singolare. Infatti, in questo caso, avrei 2 simboli che codificano nella stessa parola di codice. Due parole uguali sono l'una il prefisso dell'altra. \\ \\
+        Possiamo escludere il caso in cui c sia singolare. Infatti, in questo caso, avrei 2 simboli che sono codificati nella stessa parola di codice. Due parole uguali sono l'una il prefisso dell'altra. \\ \\
         A questo punto resta da dimostrare che se $c$ non è univocamente decodificabile allora non è istantaneo. \\
         Assumiamo che c sia non univocamente decodificabile, quindi \begin{equation} \label{eq:one}
         \exists \, x \,,\,x' \, \in \, \mathbb{X}\; \text{con} \; x \neq x' | \ \mathbb{C}(x) = \mathbb{C}(x')
@@ -279,12 +279,14 @@
     \noindent
     Abbiamo dimostrato che $$\text{codici istantanei} \subset \text{codici univocamente decodificabili}$$
 
+% Esempio di codice univocamente decodificabile ma non istantaneo
+
 
     \vspace{5px}
     \begin{tcolorbox}
         \textbf{\textcolor{red}{LEMMA} Disuguaglianza di Kraft}
         \begin{center}
-            Dati $ \mathbb{X} = \{x_1,..,x_n\}, D > 1$ e m interi $l_1,..,l_m > 0$, esiste n codice istantaneo $c: \mathbb{X} \rightarrow \mathbb{D}^+$ tale che $l_c(x_i) = l_i$ per $i = 1,..,m \leftrightarrow $ $$\sum_{i = 1}^m D^{-l_i} \leq 1$$
+            Dati $ \mathbb{X} = \{x_1,..,x_m\}, D > 1$ e m interi $l_1,..,l_m > 0$, esiste un codice istantaneo $c: \mathbb{X} \rightarrow \mathbb{D}^+$ tale che $l_c(x_i) = l_i$ per $i = 1,..,m \leftrightarrow $ $$\sum_{i = 1}^m D^{-l_i} \leq 1$$
         \end{center}
     \end{tcolorbox}
 
@@ -322,7 +324,7 @@
                             \node[state, level 2](E)[below right =of B]{};
                             \draw[-] (B) -- (D);
                             \draw[-] (B) -- (E);
-                            \node[word, level 2](F)[below left =of C]{$P_2$};
+                            \node[state, level 2](F)[below left =of C]{};
                             \node[word, level 2](G)[below right =of C]{$P_3$};
                             \draw[-] (C) -- (F);
                             \draw[-] (C) -- (G);
@@ -330,7 +332,7 @@
                             \node[state, level 3](I)[below right =of D]{};
                             \node[state, level 3](L)[below left =of E]{};
                             \node[state, level 3](M)[below right =of E]{};
-                            \node[state, level 3](N)[below left =of F]{};
+                            \node[word, level 3](N)[below left =of F]{$P_2$};
                             \node[state, level 3](O)[below right =of F]{};
                             \node[state, level 3](P)[below left =of G]{};
                             \node[state, level 3](Q)[below right =of G]{};
@@ -344,7 +346,7 @@
                             \draw[-] (G) -- (P);
                             \draw[-] (G) -- (Q);
                             \node[squarednode, below =4.22cm of B.south](A1)[]{$A_1$};
-                            \node[squarednode,minimum width=5cm, below =1.5cm of F.south](A2)[]{$A_2$};
+%\node[squarednode,minimum width=5cm, below =1.5cm of F.south](A2)[]{$A_2$};
                             \node[squarednode,minimum width=5cm, below =1.5cm of G.south](A3)[]{$A_3$};
                         \end{tikzpicture}
                     }
@@ -360,10 +362,10 @@
 
     Possiamo quindi affermare quanto segue
 
-    $$\sum_{i = 1}^n D^{l_{max} - l_i} = \sum_{i = 1}^n |A_i| \leq D^{l_max}$$
+    $$\sum_{i = 1}^n D^{l_{max} - l_i} = \sum_{i = 1}^n |A_i| \leq D^{l_{max}}$$
     Quindi
 
-    $$\sum_{i = 1}^n D^{l_{max} - l_i}\leq D^{l_max}$$
+    $$\sum_{i = 1}^n D^{l_{max} - l_i}\leq D^{l_{max}}$$
     Dividendo per $D^{l_{max}}$ ambo i membri otteniamo
 
     $$\sum_{i = 1}^n D^{-l_i} \leq 1$$
@@ -436,7 +438,7 @@
     Usiamo il metodo di Huffman per trovare il codice istantaneo ottimo. Segue un esempio esplicativo.
 
     \begin{exmp}
-        Siano dati $7$ simboli con $D = 1$ con
+        Siano dati $7$ simboli con $D = 3$ con
 
         \begin{itemize}
             \item $S\, = \, \{s_1,\dots,s_7\}$
@@ -519,8 +521,8 @@
                 column sep=-\pgflinewidth]{
                 1  \\
                 2 \\
-                01 \\
-                03 \\
+                00 \\
+                02 \\
                 010 \\
                 011 \\
                 012 \\};
@@ -537,9 +539,9 @@
                 column sep=-\pgflinewidth]{
                 1 \\
                 2 \\
+                00 \\
                 01 \\
-                02 \\
-                03 \\};
+                02 \\};
             \matrix (C) [xshift= 0.5cm,yshift=1.225cm, right =of BS,matrix of nodes, nodes={draw, minimum size=12mm},
                 column sep=-\pgflinewidth]{
                 0.5 \\
@@ -565,10 +567,10 @@
 
     \section{Proprietà Entropia}
 
-    Fissamo il modello \modello, con \sorgente$=\{x_1,\dots,x_m\}$ e $p = \{p_1,\dots,p_m\}$. Introduciamo la funzione iniettiva (ovvero la variabile aleatoria)
+    Fissiamo il modello \modello, con \sorgente$=\{x_1,\dots,x_m\}$ e $p = \{p_1,\dots,p_m\}$. Introduciamo la funzione iniettiva (ovvero la variabile aleatoria)
 
     $$X\,:\, \mathbb{X} \rightarrow \{a_1,\dots,a_m\}$$
-    Dove $a_1,\dots,a_m$ sono tali che $P(X = a_i) = p_i$. Definiamo l'entropia della variabile aleatoria $X$, su $m$ simboli, come
+    Dove $a_1,\dots,a_m \in \mathbb{R}$ sono tali che $P(X = a_i) = p_i$. Definiamo l'entropia della variabile aleatoria $X$, su $m$ simboli, come
 
     $$H_2(X) = \somma{m} p_i \log_2{\frac{1}{p_i}}$$
 
@@ -599,7 +601,7 @@
 
     \begin{itemize}
         \item Se $p = 0$ l'entropia non esiste, per convenzione diciamo che $H(X) = 0$.
-        \item Se $p = 1$ allora l'entropia vale $0$.
+        \item Se $p = 1$ allora l'entropia vale $0$ (per lo stesso motivo di $p = 0$).
         \item Se $p = \frac{1}{2}$ allora l'entropia vale $1$.
     \end{itemize}
 
@@ -626,7 +628,7 @@
         \textbf{\textcolor{red}{TEOREMA} Upper bound entropia }
         \vspace{5px}
         \begin{center}
-            Sia $X$ una variabile casuale che assume $m$ valori distinti $a_1,\dots,a_m$. Allora vale che $H_D(x) \leq \log_D{m}\, \forall D > 1$. Inoltre, $H(X) = \log_D{m}$ se e solo se $X$ ha una distribuzione uniforme su $a_1,\dots,a_m$.
+            Sia $X$ una variabile casuale che assume $m$ valori distinti $a_1,\dots,a_m$. Allora vale che $H_D(x) \leq \log_D{m} \; \; \forall D > 1$. Inoltre, $H(X) = \log_D{m}$ se e solo se $X$ ha una distribuzione uniforme su $a_1,\dots,a_m$.
         \end{center}
     \end{tcolorbox}
 
@@ -641,7 +643,7 @@
         Applichiamo il cambiamento di base
 
         $$= \somma{m} p_i (\ln{\frac{1}{m p_i}} \frac{1}{\ln{D}})$$
-        Utilizziamo la seconda proprietà che abbiamo enunciato prima
+        Utilizziamo la terza proprietà che abbiamo enunciato prima
 
         $$\leq \somma{m} p_i (\frac{1}{m p_i} - 1)(\frac{1}{\ln{D}}) = \frac{1}{\ln{D}} (\somma{m} p_i \frac{1}{p_i m} - \somma{m} p_i)$$
 
@@ -670,7 +672,7 @@
         \textbf{\textcolor{red}{TEOREMA} Non negatività entropia relativa}
         \vspace{5px}
         \begin{center}
-            Per ogni coppia di variabili casuali $X$ e $Y$ definite su uun dominio comune $S$, vale la disuguaglianza $D(X||Y) \geq 0$.
+            Per ogni coppia di variabili casuali $X$ e $Y$ definite su un dominio comune $S$, vale la disuguaglianza $D(X||Y) \geq 0$.
         \end{center}
     \end{tcolorbox}
 
@@ -678,9 +680,9 @@
         $$D(X||Y) = \sum_{s \in S} P_X(s) \log_D{\frac{P_X(s)}{P_Y(s)}} = \sum_{s \in S} P_X(s) \ln{\frac{P_X(s)}{P_Y(s)}} \frac{1}{\ln{D}}$$
 
         $$= \frac{1}{\ln{D}} \sum_{s \in S} P_X(s) \ln{\frac{P_X(s)}{P_Y(s)}} $$
-        Per la terza proprietà possiamo scrivere
+        Per il fatto che $1-\frac{1}{x} \leq \ln{x}$ scriviamo
 
-        $$\geq \frac{1}{\ln{D}} \sum_{s \in S} P_X(s) \frac{P_Y(s)}{P_X(s)} =  \frac{1}{\ln{D}} (\sum_{s \in S} P_X(s) - \sum_{s \in S} P_Y(s)) = 0 $$
+        $$\geq \frac{1}{\ln{D}} \sum_{s \in S} P_X(s)( \frac{P_Y(s)}{P_X(s)} - 1) =  \frac{1}{\ln{D}} (\sum_{s \in S} P_X(s) - \sum_{s \in S} P_Y(s)) = 0 $$
     \end{dimo}
 
     \section{Legame tra valore atteso ed entropia}
@@ -692,7 +694,7 @@
         \textbf{\textcolor{red}{TEOREMA} Lower bound valore atteso }
         \vspace{5px}
         \begin{center}
-            Se $c\, :\, \mathbb{X} \rightarrow \mathbb{D}^+$ è un codice istantaneo $d$-ario per una sorgente \modello , allora vale che
+            Se $c\, :\, \mathbb{X} \rightarrow \mathbb{D}^+$ è un codice istantaneo $d$-ario per una sorgente \\ \modello , allora vale che
 
             $$\mathbb{E}[l_c] \geq H_D(X)$$
         \end{center}
@@ -713,7 +715,7 @@
 
         $$\values p(x) \log_D{(\frac{p_x}{D^{-l_c(x)}} \frac{ \sum_{x' \in \mathbb{X}} D^{-l_c(x')}}{\sum_{x'' \in \mathbb{X}} D^{-l_c(x'')}})}$$
 
-        $$=  \values p(x) (\log_D{(p_x \frac{\sum_{x' \in \mathbb{X} } D^{-l_c(x')}}{D^{-l_c(x)}})}) - \log_D(\values D^{-l_c(x)})$$
+        $$=  \values p(x) ( (\log_D{(p_x \frac{\sum_{x' \in \mathbb{X} } D^{-l_c(x')}}{D^{-l_c(x)}})}) - \log_D(\values D^{-l_c(x)}))$$
         Sappiamo che $\frac{\sum_{x' \in \mathbb{X} } D^{-l_c(x')}} {D^{-l_c(x)}}= \frac{1}{q(x)}$
 
         $$= \values p(x) (\log_D{\frac{p(x)}{q(x)}}) - \values p(x) \log_D{\sum_{x' \in \mathbb{X}} D^{-l_c(x')}}$$
@@ -751,7 +753,7 @@
     \end{es}
 
     \begin{es}
-        Il codice $\{A,E,C,ABB,CED,BBEC\}$ è univocamente decodificabile?
+        Il codice $\{A,E,C,ABB,CED,BBEC\}$ è univocamente decodificabile? (Soluzione: No)
     \end{es}
 
     \chapter{Lezione V}
